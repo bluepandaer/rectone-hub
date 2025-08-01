@@ -6,6 +6,7 @@ import Footer from "@/components/layout/Footer";
 import ToolGrid from "@/components/shared/ToolGrid";
 import LoadingState from "@/components/shared/LoadingState";
 import ErrorState from "@/components/shared/ErrorState";
+import SEOHead from "@/components/shared/SEOHead";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -14,6 +15,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useLanguage } from "@/hooks/useLanguage";
 import { t, Language } from "@/lib/i18n";
+import { buildMeta } from "@/lib/seo";
 import { getTools, getCategories, getTags } from "@/lib/api";
 import type { Tool, Category, Tag, ToolFilters, SearchResult } from "@/lib/types";
 
@@ -111,9 +113,9 @@ const Tools = () => {
   if (loading) {
     return (
       <div className="min-h-screen bg-background">
-        <NavBar />
+        <NavBar language={language} onLanguageChange={setLanguage} />
         <LoadingState />
-        <Footer />
+        <Footer language={language} />
       </div>
     );
   }
@@ -121,16 +123,17 @@ const Tools = () => {
   if (error) {
     return (
       <div className="min-h-screen bg-background">
-        <NavBar />
+        <NavBar language={language} onLanguageChange={setLanguage} />
         <ErrorState error={error} language={language} />
-        <Footer />
+        <Footer language={language} />
       </div>
     );
   }
 
   return (
     <div className="min-h-screen bg-background">
-      <NavBar />
+      <SEOHead meta={meta} />
+      <NavBar language={language} onLanguageChange={setLanguage} />
       
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
@@ -331,7 +334,7 @@ const Tools = () => {
         </div>
       </div>
 
-      <Footer />
+      <Footer language={language} />
     </div>
   );
 };

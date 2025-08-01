@@ -8,11 +8,13 @@ import CategoryGrid from "@/components/shared/CategoryGrid";
 import ToolGrid from "@/components/shared/ToolGrid";
 import LoadingState from "@/components/shared/LoadingState";
 import ErrorState from "@/components/shared/ErrorState";
+import SEOHead from "@/components/shared/SEOHead";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useLanguage } from "@/hooks/useLanguage";
 import { t, Language } from "@/lib/i18n";
+import { buildMeta } from "@/lib/seo";
 import { 
   getFeaturedTools, 
   getTrendingTools, 
@@ -84,9 +86,9 @@ const Index = () => {
   if (loading) {
     return (
       <div className="min-h-screen bg-background">
-        <NavBar />
+        <NavBar language={language} onLanguageChange={setLanguage} />
         <LoadingState />
-        <Footer />
+        <Footer language={language} />
       </div>
     );
   }
@@ -94,16 +96,17 @@ const Index = () => {
   if (error) {
     return (
       <div className="min-h-screen bg-background">
-        <NavBar />
+        <NavBar language={language} onLanguageChange={setLanguage} />
         <ErrorState error={error} language={language} />
-        <Footer />
+        <Footer language={language} />
       </div>
     );
   }
 
   return (
     <div className="min-h-screen bg-background">
-      <NavBar />
+      <SEOHead meta={meta} />
+      <NavBar language={language} onLanguageChange={setLanguage} />
       
       {/* Hero Section */}
       <section className="relative py-24 bg-gradient-to-br from-primary/10 via-background to-secondary/10">
@@ -284,7 +287,7 @@ const Index = () => {
         </section>
       )}
 
-      <Footer />
+      <Footer language={language} />
     </div>
   );
 };

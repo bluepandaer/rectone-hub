@@ -160,48 +160,7 @@ export const buildVSJsonLD = (vsPair: VSPair, toolA: Tool, toolB: Tool): any => 
 
 // React hook for managing page meta data
 export const usePageMeta = (meta: MetaData) => {
-  const updateMeta = () => {
-    // Update title
-    document.title = meta.title;
-    
-    // Update meta description
-    updateMetaTag('description', meta.description);
-    
-    // Update canonical
-    if (meta.canonical) {
-      updateLinkTag('canonical', meta.canonical);
-    }
-    
-    // Update Open Graph tags
-    if (meta.og) {
-      updateMetaTag('og:title', meta.og.title, 'property');
-      updateMetaTag('og:description', meta.og.description, 'property');
-      updateMetaTag('og:type', meta.og.type || 'website', 'property');
-      if (meta.og.image) {
-        updateMetaTag('og:image', meta.og.image, 'property');
-      }
-    }
-    
-    // Update Twitter tags
-    if (meta.twitter) {
-      updateMetaTag('twitter:card', meta.twitter.card);
-      updateMetaTag('twitter:title', meta.twitter.title);
-      updateMetaTag('twitter:description', meta.twitter.description);
-      if (meta.twitter.image) {
-        updateMetaTag('twitter:image', meta.twitter.image);
-      }
-    }
-    
-    // Update structured data
-    if (meta.structuredData) {
-      updateStructuredData(meta.structuredData);
-    }
-  };
-
-  // Call updateMeta when component mounts or meta changes
-  React.useEffect(() => {
-    updateMeta();
-  }, [meta]);
+  // This is handled by SEOHead component, keeping for compatibility
 };
 
 const updateMetaTag = (name: string, content: string, type: 'name' | 'property' = 'name') => {
@@ -240,12 +199,4 @@ const updateStructuredData = (data: any) => {
   }
   
   element.textContent = JSON.stringify(data);
-};
-
-// Import React for useEffect
-import { useEffect } from 'react';
-
-// Fix the React import issue
-declare const React: {
-  useEffect: typeof useEffect;
 };
