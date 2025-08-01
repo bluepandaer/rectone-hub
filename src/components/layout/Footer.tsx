@@ -4,11 +4,13 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
 
+import { t, type Language } from "@/lib/i18n";
+
 interface FooterProps {
-  language?: string;
+  language?: Language;
 }
 
-const Footer = ({ language = "zh" }: FooterProps) => {
+const Footer = ({ language = "en" }: FooterProps) => {
   const [email, setEmail] = useState("");
 
   const handleSubscribe = (e: React.FormEvent) => {

@@ -1,0 +1,477 @@
+-- Seed data for rect.one tools hub
+
+-- Insert categories
+INSERT INTO categories (slug, name, name_zh, description, icon, color, count) VALUES
+('writing', 'Writing', '写作', 'AI writing tools for content creation, editing, and enhancement', 'PenTool', '#3B82F6', 4),
+('coding', 'Coding', '编程', 'Development tools, code editors, and programming assistants', 'Code', '#10B981', 6),
+('design', 'Design', '设计', 'Creative design tools and AI-powered visual creation', 'Palette', '#F59E0B', 3),
+('productivity', 'Productivity', '效率工具', 'Tools to enhance workflow and boost productivity', 'Zap', '#8B5CF6', 5),
+('marketing', 'Marketing', '营销', 'Marketing automation and campaign management tools', 'TrendingUp', '#EF4444', 2),
+('data', 'Data', '数据', 'Data analysis, visualization, and intelligence tools', 'BarChart', '#06B6D4', 2),
+('video', 'Video', '视频', 'Video editing, generation, and production tools', 'Video', '#EC4899', 2),
+('audio', 'Audio', '音频', 'Audio editing, generation, and processing tools', 'Headphones', '#84CC16', 1);
+
+-- Insert tags
+INSERT INTO tags (slug, name, name_zh, count) VALUES
+('ai-writing', 'AI Writing', 'AI写作', 4),
+('code-editor', 'Code Editor', '代码编辑器', 3),
+('open-source', 'Open Source', '开源', 8),
+('free-trial', 'Free Trial', '免费试用', 15),
+('browser-extension', 'Browser Extension', '浏览器扩展', 4),
+('chinese-support', 'Chinese Support', '中文支持', 10),
+('team-collaboration', 'Team Collaboration', '团队协作', 6),
+('api-available', 'API Available', 'API接口', 12),
+('no-code', 'No Code', '无代码', 3),
+('real-time', 'Real-time', '实时', 5),
+('cloud-based', 'Cloud-based', '云端', 18),
+('mobile-app', 'Mobile App', '移动应用', 8);
+
+-- Insert tools
+INSERT INTO tools (
+  slug, name, slogan, description_md, logo_url, website_url, docs_url,
+  pricing, is_open_source, has_free_trial, supports_cn, platforms, integrations,
+  categories, tags, login_methods, score, pros, cons, faq, is_featured
+) VALUES
+('chatgpt', 'ChatGPT', 'AI assistant for conversations and tasks', 
+'OpenAI''s ChatGPT is a conversational AI assistant that can help with writing, coding, analysis, and various tasks through natural language interaction.',
+'https://cdn.openai.com/brand-guidelines/chatgpt-logo.png',
+'https://chat.openai.com/', 'https://platform.openai.com/docs',
+'[{"plan":"Free","price":"$0","notes":"Limited usage"},{"plan":"Plus","price":"$20/mo","notes":"Unlimited usage, GPT-4 access"}]'::jsonb,
+false, true, true, ARRAY['Web', 'iOS', 'Android'], ARRAY['Zapier', 'API'],
+ARRAY['writing', 'productivity'], ARRAY['ai-writing', 'chinese-support', 'free-trial', 'api-available'],
+ARRAY['Google', 'Microsoft', 'Apple'], '{"ease": 4.8, "value": 4.6, "features": 4.7, "docs": 4.5}'::jsonb,
+ARRAY['Easy to use', 'Great for various tasks', 'Regular updates'], 
+ARRAY['Usage limits on free plan', 'Occasional downtime'],
+'[{"q":"Is ChatGPT free?","a":"Yes, there''s a free tier with limited usage. ChatGPT Plus costs $20/month for unlimited access."}]'::jsonb,
+true),
+
+('claude', 'Claude', 'AI assistant by Anthropic', 
+'Claude is Anthropic''s AI assistant, designed to be helpful, harmless, and honest. Great for analysis, writing, and coding tasks.',
+'https://www.anthropic.com/images/claude-logo.png',
+'https://claude.ai/', 'https://docs.anthropic.com/',
+'[{"plan":"Free","price":"$0","notes":"Limited usage"},{"plan":"Pro","price":"$20/mo","notes":"5x more usage"},{"plan":"Team","price":"$25/mo","notes":"Team features"}]'::jsonb,
+false, true, true, ARRAY['Web'], ARRAY['API'],
+ARRAY['writing', 'productivity'], ARRAY['ai-writing', 'chinese-support', 'free-trial', 'api-available'],
+ARRAY['Email', 'Google'], '{"ease": 4.7, "value": 4.5, "features": 4.6, "docs": 4.4}'::jsonb,
+ARRAY['Great for analysis', 'Safety-focused', 'Good reasoning'], 
+ARRAY['Limited platform availability', 'Newer than competitors'],
+'[{"q":"How does Claude compare to ChatGPT?","a":"Claude focuses on safety and reasoning, while ChatGPT has broader platform support."}]'::jsonb,
+true),
+
+('cursor', 'Cursor', 'The AI-first code editor', 
+'Cursor is a fork of VS Code that integrates AI deeply into the coding experience, offering intelligent code completion and AI pair programming.',
+'https://cursor.sh/brand/icon.png',
+'https://cursor.sh/', 'https://docs.cursor.sh/',
+'[{"plan":"Free","price":"$0","notes":"2000 completions/month"},{"plan":"Pro","price":"$20/mo","notes":"Unlimited usage"},{"plan":"Business","price":"$40/mo","notes":"Team features"}]'::jsonb,
+false, true, true, ARRAY['Windows', 'macOS', 'Linux'], ARRAY['GitHub', 'GitLab'],
+ARRAY['coding', 'productivity'], ARRAY['code-editor', 'ai-writing', 'chinese-support', 'free-trial'],
+ARRAY['GitHub'], '{"ease": 4.6, "value": 4.7, "features": 4.8, "docs": 4.3}'::jsonb,
+ARRAY['AI-powered coding', 'VS Code compatibility', 'Great for learning'], 
+ARRAY['Resource intensive', 'Learning curve for AI features'],
+'[{"q":"Is Cursor free?","a":"Yes, with 2000 AI completions per month. Pro plan offers unlimited usage."}]'::jsonb,
+true),
+
+('notion-ai', 'Notion AI', 'AI-powered workspace', 
+'Notion AI adds artificial intelligence capabilities to your Notion workspace, helping with writing, brainstorming, and content organization.',
+'https://www.notion.so/images/logo-ios.png',
+'https://notion.so/', 'https://developers.notion.com/',
+'[{"plan":"Free","price":"$0","notes":"Limited AI usage"},{"plan":"Plus","price":"$8/mo","notes":"Unlimited AI"},{"plan":"Business","price":"$15/mo","notes":"Team features"}]'::jsonb,
+false, true, true, ARRAY['Web', 'iOS', 'Android', 'Windows', 'macOS'], ARRAY['Slack', 'Zapier', 'Google Drive'],
+ARRAY['writing', 'productivity'], ARRAY['ai-writing', 'team-collaboration', 'chinese-support', 'free-trial'],
+ARRAY['Google', 'Apple', 'SAML'], '{"ease": 4.5, "value": 4.4, "features": 4.6, "docs": 4.7}'::jsonb,
+ARRAY['Integrated workspace', 'Great for teams', 'Flexible structure'], 
+ARRAY['Can be slow', 'Learning curve'],
+'[{"q":"Can I use Notion AI for free?","a":"Yes, Notion offers limited AI usage on the free plan."}]'::jsonb,
+false),
+
+('windsurf', 'Windsurf', 'AI-powered development environment', 
+'Windsurf by Codeium provides an intelligent development environment with AI assistance for faster and smarter coding.',
+'https://windsurf.codeium.com/logo.png',
+'https://windsurf.codeium.com/', 'https://docs.codeium.com/',
+'[{"plan":"Free","price":"$0","notes":"Individual use"},{"plan":"Pro","price":"$12/mo","notes":"Advanced features"},{"plan":"Teams","price":"$35/mo","notes":"Team collaboration"}]'::jsonb,
+false, true, true, ARRAY['Windows', 'macOS', 'Linux'], ARRAY['GitHub', 'GitLab', 'VS Code'],
+ARRAY['coding', 'productivity'], ARRAY['code-editor', 'ai-writing', 'free-trial', 'team-collaboration'],
+ARRAY['GitHub', 'Google'], '{"ease": 4.4, "value": 4.6, "features": 4.5, "docs": 4.2}'::jsonb,
+ARRAY['Fast AI completions', 'Good VS Code integration', 'Free tier generous'], 
+ARRAY['Newer product', 'Limited documentation'],
+'[{"q":"Is Windsurf free?","a":"Yes, Windsurf offers a generous free tier for individual developers."}]'::jsonb,
+false),
+
+('midjourney', 'Midjourney', 'AI image generation', 
+'Midjourney creates stunning, artistic images from text descriptions using advanced AI. Popular among designers and creators.',
+'https://midjourney.com/favicon.ico',
+'https://midjourney.com/', 'https://docs.midjourney.com/',
+'[{"plan":"Basic","price":"$10/mo","notes":"200 images"},{"plan":"Standard","price":"$30/mo","notes":"Unlimited relaxed"},{"plan":"Pro","price":"$60/mo","notes":"Unlimited fast"}]'::jsonb,
+false, false, false, ARRAY['Web', 'Discord'], ARRAY['Discord'],
+ARRAY['design'], ARRAY['no-code', 'api-available'],
+ARRAY['Discord'], '{"ease": 4.2, "value": 4.3, "features": 4.8, "docs": 3.9}'::jsonb,
+ARRAY['Stunning image quality', 'Artistic style', 'Strong community'], 
+ARRAY['Discord-only interface', 'No free tier', 'Learning curve'],
+'[{"q":"Can I try Midjourney for free?","a":"Midjourney no longer offers free trials, but has affordable paid plans starting at $10/month."}]'::jsonb,
+true),
+
+('zapier', 'Zapier', 'Workflow automation platform', 
+'Zapier connects your apps and automates workflows, helping you focus on what matters most by eliminating repetitive tasks.',
+'https://zapier.com/favicon.ico',
+'https://zapier.com/', 'https://zapier.com/help/',
+'[{"plan":"Free","price":"$0","notes":"100 tasks/month"},{"plan":"Starter","price":"$19.99/mo","notes":"750 tasks/month"},{"plan":"Professional","price":"$49/mo","notes":"2000 tasks/month"}]'::jsonb,
+false, true, true, ARRAY['Web'], ARRAY['5000+ apps'],
+ARRAY['productivity', 'marketing'], ARRAY['no-code', 'team-collaboration', 'chinese-support', 'free-trial'],
+ARRAY['Google', 'Microsoft', 'Facebook'], '{"ease": 4.3, "value": 4.4, "features": 4.7, "docs": 4.6}'::jsonb,
+ARRAY['Huge app ecosystem', 'No-code automation', 'Reliable'], 
+ARRAY['Can get expensive', 'Complex workflows need paid plans'],
+'[{"q":"Is Zapier free?","a":"Yes, Zapier offers a free plan with 100 tasks per month."}]'::jsonb,
+false),
+
+('github-copilot', 'GitHub Copilot', 'AI pair programmer', 
+'GitHub Copilot is an AI coding assistant that provides intelligent code suggestions and completions in real-time as you type.',
+'https://github.com/github.png',
+'https://github.com/features/copilot', 'https://docs.github.com/copilot',
+'[{"plan":"Individual","price":"$10/mo","notes":"Personal use"},{"plan":"Business","price":"$19/mo","notes":"Commercial use"},{"plan":"Enterprise","price":"$39/mo","notes":"Advanced features"}]'::jsonb,
+false, true, true, ARRAY['VS Code', 'JetBrains', 'Neovim', 'Azure Data Studio'], ARRAY['GitHub', 'VS Code'],
+ARRAY['coding', 'productivity'], ARRAY['code-editor', 'ai-writing', 'chinese-support', 'free-trial'],
+ARRAY['GitHub'], '{"ease": 4.7, "value": 4.5, "features": 4.6, "docs": 4.8}'::jsonb,
+ARRAY['Excellent IDE integration', 'Context-aware suggestions', 'Backed by GitHub'], 
+ARRAY['Requires subscription', 'Privacy concerns for some'],
+'[{"q":"Can I try GitHub Copilot for free?","a":"Yes, GitHub Copilot offers a 30-day free trial."}]'::jsonb,
+true),
+
+('vs-code', 'VS Code', 'Free code editor by Microsoft', 
+'Visual Studio Code is a lightweight but powerful source code editor with rich ecosystem of extensions and built-in Git support.',
+'https://code.visualstudio.com/favicon.ico',
+'https://code.visualstudio.com/', 'https://code.visualstudio.com/docs',
+'[{"plan":"Free","price":"$0","notes":"Complete editor"}]'::jsonb,
+true, true, true, ARRAY['Windows', 'macOS', 'Linux', 'Web'], ARRAY['GitHub', 'Azure', 'Docker'],
+ARRAY['coding', 'productivity'], ARRAY['code-editor', 'open-source', 'free-trial', 'chinese-support'],
+ARRAY['Microsoft', 'GitHub'], '{"ease": 4.8, "value": 5.0, "features": 4.9, "docs": 4.9}'::jsonb,
+ARRAY['Completely free', 'Huge extension ecosystem', 'Excellent performance'], 
+ARRAY['Can be overwhelming for beginners', 'Resource usage with many extensions'],
+'[{"q":"Is VS Code really free?","a":"Yes, VS Code is completely free and open source."}]'::jsonb,
+true),
+
+('raycast', 'Raycast', 'Productivity launcher for Mac', 
+'Raycast is a blazingly fast, totally extendable launcher that lets you complete tasks, calculate, share common links, and much more.',
+'https://raycast.com/favicon-32x32.png',
+'https://raycast.com/', 'https://developers.raycast.com/',
+'[{"plan":"Free","price":"$0","notes":"Core features"},{"plan":"Pro","price":"$8/mo","notes":"Cloud sync, AI, unlimited"}]'::jsonb,
+false, true, true, ARRAY['macOS'], ARRAY['GitHub', 'Notion', 'Jira', 'Linear'],
+ARRAY['productivity'], ARRAY['free-trial', 'api-available', 'chinese-support'],
+ARRAY['GitHub', 'Google'], '{"ease": 4.9, "value": 4.7, "features": 4.8, "docs": 4.5}'::jsonb,
+ARRAY['Lightning fast', 'Beautiful interface', 'Great extensions'], 
+ARRAY['macOS only', 'Some features require Pro'],
+'[{"q":"Is Raycast available on Windows?","a":"No, Raycast is currently macOS exclusive."}]'::jsonb,
+false),
+
+('obsidian', 'Obsidian', 'Knowledge management for connected thought', 
+'Obsidian is a powerful knowledge base that works on local Markdown files, helping you build a second brain with linked notes.',
+'https://obsidian.md/favicon.ico',
+'https://obsidian.md/', 'https://help.obsidian.md/',
+'[{"plan":"Personal","price":"$0","notes":"Free for personal use"},{"plan":"Catalyst","price":"$25","notes":"Early access & perks"},{"plan":"Commercial","price":"$50/user/year","notes":"Business use"}]'::jsonb,
+false, true, true, ARRAY['Windows', 'macOS', 'Linux', 'iOS', 'Android'], ARRAY['Various plugins'],
+ARRAY['productivity', 'writing'], ARRAY['free-trial', 'chinese-support', 'mobile-app'],
+ARRAY['Email'], '{"ease": 4.2, "value": 4.8, "features": 4.7, "docs": 4.4}'::jsonb,
+ARRAY['Free for personal use', 'Local files', 'Highly customizable'], 
+ARRAY['Learning curve', 'Can become complex'],
+'[{"q":"Is Obsidian free?","a":"Yes, Obsidian is free for personal use. Commercial use requires a license."}]'::jsonb,
+false),
+
+('perplexity', 'Perplexity', 'AI-powered search engine', 
+'Perplexity combines search and AI to provide accurate, real-time answers with citations from reliable sources.',
+'https://perplexity.ai/favicon.png',
+'https://perplexity.ai/', 'https://docs.perplexity.ai/',
+'[{"plan":"Free","price":"$0","notes":"Limited searches"},{"plan":"Pro","price":"$20/mo","notes":"Unlimited Pro searches"},{"plan":"Enterprise","price":"$40/mo","notes":"Team features"}]'::jsonb,
+false, true, true, ARRAY['Web', 'iOS', 'Android'], ARRAY['API'],
+ARRAY['productivity', 'data'], ARRAY['ai-writing', 'chinese-support', 'free-trial', 'api-available', 'mobile-app'],
+ARRAY['Google', 'Apple'], '{"ease": 4.6, "value": 4.4, "features": 4.5, "docs": 4.1}'::jsonb,
+ARRAY['Real-time information', 'Source citations', 'Clean interface'], 
+ARRAY['Limited free searches', 'Newer product'],
+'[{"q":"How is Perplexity different from Google?","a":"Perplexity provides AI-generated answers with citations, while Google shows search results."}]'::jsonb,
+false),
+
+('replit', 'Replit', 'Online IDE and development platform', 
+'Replit is a collaborative online IDE supporting 50+ programming languages with instant deployment and AI assistance.',
+'https://replit.com/favicon.ico',
+'https://replit.com/', 'https://docs.replit.com/',
+'[{"plan":"Core","price":"$0","notes":"Public repls"},{"plan":"Replit Core","price":"$20/mo","notes":"Private repls, faster"},{"plan":"Teams","price":"$40/mo","notes":"Team collaboration"}]'::jsonb,
+false, true, true, ARRAY['Web'], ARRAY['GitHub', 'npm'],
+ARRAY['coding', 'productivity'], ARRAY['cloud-based', 'team-collaboration', 'ai-writing', 'free-trial'],
+ARRAY['Google', 'GitHub'], '{"ease": 4.5, "value": 4.3, "features": 4.4, "docs": 4.3}'::jsonb,
+ARRAY['No setup required', 'Great for learning', 'Instant deployment'], 
+ARRAY['Performance limitations', 'Internet dependency'],
+'[{"q":"Can I use Replit for free?","a":"Yes, Replit offers a free tier with public repls and basic features."}]'::jsonb,
+false),
+
+('lovable', 'Lovable', 'AI-powered full-stack development', 
+'Lovable enables you to build full-stack applications using AI, with integrated database, authentication, and deployment.',
+'https://lovable.dev/favicon.ico',
+'https://lovable.dev/', 'https://docs.lovable.dev/',
+'[{"plan":"Free","price":"$0","notes":"Personal projects"},{"plan":"Pro","price":"$20/mo","notes":"Advanced features"},{"plan":"Team","price":"$50/mo","notes":"Team collaboration"}]'::jsonb,
+false, true, true, ARRAY['Web'], ARRAY['Supabase', 'Vercel'],
+ARRAY['coding', 'productivity'], ARRAY['ai-writing', 'no-code', 'cloud-based', 'free-trial'],
+ARRAY['Google', 'GitHub'], '{"ease": 4.7, "value": 4.6, "features": 4.5, "docs": 4.4}'::jsonb,
+ARRAY['AI-powered development', 'Full-stack in one platform', 'Great for prototyping'], 
+ARRAY['Limited customization', 'Newer platform'],
+'[{"q":"What makes Lovable different?","a":"Lovable uses AI to help you build complete applications, not just generate code snippets."}]'::jsonb,
+true),
+
+('warp', 'Warp', 'The terminal for the 21st century', 
+'Warp is a modern terminal built for speed and collaboration, with AI assistance and IDE-like features.',
+'https://warp.dev/favicon.ico',
+'https://warp.dev/', 'https://docs.warp.dev/',
+'[{"plan":"Free","price":"$0","notes":"Individual use"},{"plan":"Team","price":"$20/mo","notes":"Team features"}]'::jsonb,
+false, true, true, ARRAY['macOS', 'Linux'], ARRAY['GitHub'],
+ARRAY['coding', 'productivity'], ARRAY['ai-writing', 'team-collaboration', 'free-trial'],
+ARRAY['GitHub', 'Google'], '{"ease": 4.4, "value": 4.5, "features": 4.6, "docs": 4.2}'::jsonb,
+ARRAY['Modern interface', 'AI assistance', 'Great collaboration'], 
+ARRAY['Limited platform support', 'Resource intensive'],
+'[{"q":"Is Warp available on Windows?","a":"Not yet, Warp currently supports macOS and Linux."}]'::jsonb,
+false),
+
+('vercel', 'Vercel', 'Frontend cloud platform', 
+'Vercel provides the developer experience and infrastructure to build, scale, and secure a faster, more personalized web.',
+'https://vercel.com/favicon.ico',
+'https://vercel.com/', 'https://vercel.com/docs',
+'[{"plan":"Hobby","price":"$0","notes":"Personal projects"},{"plan":"Pro","price":"$20/mo","notes":"Commercial use"},{"plan":"Enterprise","price":"Custom","notes":"Enterprise features"}]'::jsonb,
+false, true, true, ARRAY['Web'], ARRAY['GitHub', 'GitLab', 'Bitbucket'],
+ARRAY['coding', 'productivity'], ARRAY['cloud-based', 'team-collaboration', 'free-trial', 'api-available'],
+ARRAY['GitHub', 'GitLab'], '{"ease": 4.6, "value": 4.4, "features": 4.5, "docs": 4.7}'::jsonb,
+ARRAY['Instant deployments', 'Great DX', 'Edge network'], 
+ARRAY['Can get expensive', 'Vendor lock-in'],
+'[{"q":"Is Vercel free for personal projects?","a":"Yes, Vercel offers a generous free Hobby plan for personal use."}]'::jsonb,
+false),
+
+('netlify', 'Netlify', 'Modern web development platform', 
+'Netlify is a web development platform that multiplies productivity by unifying the elements of the modern decoupled web.',
+'https://netlify.com/favicon.ico',
+'https://netlify.com/', 'https://docs.netlify.com/',
+'[{"plan":"Starter","price":"$0","notes":"Personal projects"},{"plan":"Pro","price":"$19/mo","notes":"Advanced features"},{"plan":"Business","price":"$99/mo","notes":"Team features"}]'::jsonb,
+false, true, true, ARRAY['Web'], ARRAY['GitHub', 'GitLab', 'Bitbucket'],
+ARRAY['coding', 'productivity'], ARRAY['cloud-based', 'team-collaboration', 'free-trial', 'api-available'],
+ARRAY['GitHub', 'GitLab'], '{"ease": 4.5, "value": 4.3, "features": 4.4, "docs": 4.6}'::jsonb,
+ARRAY['Easy deployment', 'Great forms handling', 'CDN included'], 
+ARRAY['Build minutes limited', 'Less focused than competitors'],
+'[{"q":"How does Netlify compare to Vercel?","a":"Both are great for static sites. Netlify has better forms, Vercel has better Next.js integration."}]'::jsonb,
+false),
+
+('supabase', 'Supabase', 'Open source Firebase alternative', 
+'Supabase is an open source Firebase alternative providing instant APIs, realtime subscriptions, authentication, and storage.',
+'https://supabase.com/favicon.ico',
+'https://supabase.com/', 'https://supabase.com/docs',
+'[{"plan":"Free","price":"$0","notes":"2 projects, 500MB DB"},{"plan":"Pro","price":"$25/mo","notes":"Unlimited projects"},{"plan":"Team","price":"$599/mo","notes":"Team features"}]'::jsonb,
+true, true, true, ARRAY['Web', 'iOS', 'Android', 'Flutter'], ARRAY['Next.js', 'React', 'Vue'],
+ARRAY['coding', 'data'], ARRAY['open-source', 'api-available', 'cloud-based', 'free-trial', 'real-time'],
+ARRAY['GitHub', 'Google'], '{"ease": 4.4, "value": 4.7, "features": 4.6, "docs": 4.8}'::jsonb,
+ARRAY['Open source', 'PostgreSQL-based', 'Great documentation'], 
+ARRAY['Newer than Firebase', 'Smaller ecosystem'],
+'[{"q":"Is Supabase really free?","a":"Yes, Supabase offers a generous free tier with 2 projects and 500MB database."}]'::jsonb,
+true),
+
+('runway', 'Runway', 'AI-powered creative tools', 
+'Runway democratizes content creation with AI tools for video editing, image generation, and creative workflows.',
+'https://runway.com/favicon.ico',
+'https://runway.com/', 'https://docs.runway.com/',
+'[{"plan":"Free","price":"$0","notes":"Limited credits"},{"plan":"Standard","price":"$15/mo","notes":"More credits"},{"plan":"Pro","price":"$35/mo","notes":"Unlimited"}]'::jsonb,
+false, true, false, ARRAY['Web'], ARRAY['Adobe'],
+ARRAY['video', 'design'], ARRAY['ai-writing', 'cloud-based', 'free-trial'],
+ARRAY['Google', 'Apple'], '{"ease": 4.3, "value": 4.2, "features": 4.7, "docs": 4.0}'::jsonb,
+ARRAY['Cutting-edge AI', 'Great video tools', 'Creative community'], 
+ARRAY['Can be expensive', 'Learning curve', 'Internet dependent'],
+'[{"q":"Can I try Runway for free?","a":"Yes, Runway offers free credits to try their AI tools."}]'::jsonb,
+false),
+
+('fastapi', 'FastAPI', 'Modern Python web framework', 
+'FastAPI is a modern, fast Python web framework for building APIs with automatic documentation and type hints.',
+'https://fastapi.tiangolo.com/img/favicon.png',
+'https://fastapi.tiangolo.com/', 'https://fastapi.tiangolo.com/tutorial/',
+'[{"plan":"Open Source","price":"$0","notes":"Completely free"}]'::jsonb,
+true, true, true, ARRAY['Linux', 'Windows', 'macOS'], ARRAY['PostgreSQL', 'MongoDB', 'Redis'],
+ARRAY['coding'], ARRAY['open-source', 'api-available', 'chinese-support'],
+ARRAY['None required'], '{"ease": 4.3, "value": 5.0, "features": 4.6, "docs": 4.9}'::jsonb,
+ARRAY['Extremely fast', 'Automatic docs', 'Type safety'], 
+ARRAY['Python only', 'Learning curve for beginners'],
+'[{"q":"Is FastAPI suitable for beginners?","a":"FastAPI has excellent documentation, but some Python and web development knowledge is helpful."}]'::jsonb,
+false),
+
+('nextjs', 'Next.js', 'The React framework for production', 
+'Next.js is a React framework that provides hybrid static & server rendering, TypeScript support, smart bundling, and more.',
+'https://nextjs.org/favicon.ico',
+'https://nextjs.org/', 'https://nextjs.org/docs',
+'[{"plan":"Open Source","price":"$0","notes":"Completely free"}]'::jsonb,
+true, true, true, ARRAY['Web'], ARRAY['Vercel', 'Netlify', 'AWS'],
+ARRAY['coding'], ARRAY['open-source', 'chinese-support', 'api-available'],
+ARRAY['None required'], '{"ease": 4.1, "value": 4.9, "features": 4.8, "docs": 4.8}'::jsonb,
+ARRAY['Production ready', 'Great performance', 'Huge ecosystem'], 
+ARRAY['Learning curve', 'Can be complex for simple projects'],
+'[{"q":"Do I need to know React to use Next.js?","a":"Yes, Next.js builds on React, so React knowledge is essential."}]'::jsonb,
+true),
+
+('prisma', 'Prisma', 'Next-generation ORM for Node.js & TypeScript', 
+'Prisma is a modern ORM that helps developers build faster and make fewer errors with type-safe database access.',
+'https://prisma.io/favicon.ico',
+'https://prisma.io/', 'https://prisma.io/docs',
+'[{"plan":"Open Source","price":"$0","notes":"Self-hosted"},{"plan":"Cloud","price":"$29/mo","notes":"Managed platform"}]'::jsonb,
+true, true, true, ARRAY['Node.js'], ARRAY['PostgreSQL', 'MySQL', 'SQLite', 'MongoDB'],
+ARRAY['coding', 'data'], ARRAY['open-source', 'api-available', 'chinese-support'],
+ARRAY['None required'], '{"ease": 4.5, "value": 4.6, "features": 4.7, "docs": 4.9}'::jsonb,
+ARRAY['Type safety', 'Great tooling', 'Excellent docs'], 
+ARRAY['Node.js only', 'Additional abstraction layer'],
+'[{"q":"Can I use Prisma with any database?","a":"Prisma supports PostgreSQL, MySQL, SQLite, MongoDB, and SQL Server."}]'::jsonb,
+false),
+
+('langchain', 'LangChain', 'Framework for developing LLM applications', 
+'LangChain is a framework for developing applications powered by language models, with tools for chaining, memory, and agents.',
+'https://langchain.com/favicon.ico',
+'https://langchain.com/', 'https://docs.langchain.com/',
+'[{"plan":"Open Source","price":"$0","notes":"MIT License"},{"plan":"LangSmith","price":"$39/mo","notes":"Platform features"}]'::jsonb,
+true, true, true, ARRAY['Python', 'JavaScript'], ARRAY['OpenAI', 'Anthropic', 'Cohere'],
+ARRAY['coding', 'data'], ARRAY['open-source', 'api-available', 'chinese-support'],
+ARRAY['None required'], '{"ease": 3.8, "value": 4.4, "features": 4.7, "docs": 4.2}'::jsonb,
+ARRAY['Powerful framework', 'Great for AI apps', 'Active community'], 
+ARRAY['Complex for beginners', 'Rapidly changing API'],
+'[{"q":"What programming languages does LangChain support?","a":"LangChain has implementations in Python and JavaScript/TypeScript."}]'::jsonb,
+false),
+
+('openwebui', 'Open WebUI', 'User-friendly interface for LLMs', 
+'Open WebUI is a feature-rich and user-friendly self-hosted WebUI designed to operate entirely offline with various LLM runners.',
+'https://openwebui.com/favicon.png',
+'https://openwebui.com/', 'https://docs.openwebui.com/',
+'[{"plan":"Open Source","price":"$0","notes":"Self-hosted only"}]'::jsonb,
+true, true, true, ARRAY['Docker', 'Linux', 'Windows', 'macOS'], ARRAY['Ollama', 'OpenAI API'],
+ARRAY['coding'], ARRAY['open-source', 'chinese-support'],
+ARRAY['None required'], '{"ease": 4.0, "value": 4.8, "features": 4.4, "docs": 4.1}'::jsonb,
+ARRAY['Completely free', 'Privacy-focused', 'Self-hosted'], 
+ARRAY['Requires technical setup', 'Limited cloud options'],
+'[{"q":"Can I run Open WebUI in the cloud?","a":"Open WebUI is designed for self-hosting, but you can deploy it on cloud servers."}]'::jsonb,
+false);
+
+-- Insert deals
+INSERT INTO deals (tool_slug, title, code, url, description, starts_at, ends_at, source, discount_percentage) VALUES
+('chatgpt', 'ChatGPT Plus Summer Special', 'SUMMER2024', 'https://chat.openai.com/', 'Get 20% off your first month of ChatGPT Plus. Limited time offer for new subscribers.', '2024-08-01', '2024-08-31', 'official', 20),
+('cursor', 'Cursor Student Discount', 'STUDENT50', 'https://cursor.sh/', 'Students get 50% off Cursor Pro with valid student ID verification.', '2024-01-01', '2024-12-31', 'official', 50),
+('notion-ai', 'Notion Team Bundle', 'TEAM20', 'https://notion.so/', 'Teams of 5+ users get 20% off annual Notion subscriptions including AI features.', '2024-07-15', '2024-09-15', 'partner', 20),
+('midjourney', 'Annual Plan Discount', '', 'https://midjourney.com/', 'Save 20% when you pay annually for any Midjourney subscription plan.', '2024-08-01', '2024-12-31', 'official', 20),
+('raycast', 'Black Friday Deal', 'BLACKFRIDAY', 'https://raycast.com/', 'Get 40% off Raycast Pro annual subscription. Limited time Black Friday offer.', '2024-11-25', '2024-11-30', 'official', 40),
+('github-copilot', 'First Month Free', '', 'https://github.com/features/copilot', 'Try GitHub Copilot free for your first month. No credit card required for trial.', '2024-01-01', '2024-12-31', 'official', 100);
+
+-- Insert alternatives
+INSERT INTO alternatives (brand, description, items) VALUES
+('ChatGPT', 'Looking for alternatives to ChatGPT? Here are the best AI assistants for different use cases.',
+'[
+  {"tool_slug": "claude", "reason": "Better for analysis and reasoning tasks, more safety-focused"},
+  {"tool_slug": "perplexity", "reason": "Combines search with AI, provides real-time information with citations"},
+  {"tool_slug": "gemini", "reason": "Google''s AI with integration to Google services"},
+  {"tool_slug": "copilot", "reason": "Microsoft''s AI integrated with Office and Windows"}
+]'::jsonb),
+
+('Notion', 'Explore alternatives to Notion for productivity and note-taking.',
+'[
+  {"tool_slug": "obsidian", "reason": "Better for knowledge management with graph view and local files"},
+  {"tool_slug": "logseq", "reason": "Open-source block-based note-taking with local storage"},
+  {"tool_slug": "roam-research", "reason": "Pioneered bidirectional linking for research"},
+  {"tool_slug": "remnote", "reason": "Spaced repetition built into note-taking"}
+]'::jsonb),
+
+('VS Code', 'Alternatives to VS Code for different development needs.',
+'[
+  {"tool_slug": "cursor", "reason": "AI-first editor with deep AI integration"},
+  {"tool_slug": "windsurf", "reason": "Modern development environment with AI assistance"},
+  {"tool_slug": "jetbrains-ide", "reason": "Professional IDEs with advanced debugging and refactoring"},
+  {"tool_slug": "vim", "reason": "Lightweight, keyboard-driven editor for power users"},
+  {"tool_slug": "sublime-text", "reason": "Fast, lightweight editor with excellent performance"}
+]'::jsonb),
+
+('GitHub Copilot', 'AI coding assistants that compete with GitHub Copilot.',
+'[
+  {"tool_slug": "cursor", "reason": "Better integration with AI chat and code editing"},
+  {"tool_slug": "codeium", "reason": "Free alternative with good IDE support"},
+  {"tool_slug": "tabnine", "reason": "Privacy-focused with on-premises options"},
+  {"tool_slug": "amazon-codewhisperer", "reason": "Free tier available, good AWS integration"}
+]'::jsonb),
+
+('Midjourney', 'Image generation alternatives to Midjourney.',
+'[
+  {"tool_slug": "dall-e", "reason": "More photorealistic results, better text integration"},
+  {"tool_slug": "stable-diffusion", "reason": "Open source, can run locally, highly customizable"},
+  {"tool_slug": "runway", "reason": "Better for video generation and creative workflows"},
+  {"tool_slug": "adobe-firefly", "reason": "Commercial-safe training data, Adobe ecosystem integration"}
+]'::jsonb),
+
+('Figma', 'Design tool alternatives to Figma.',
+'[
+  {"tool_slug": "sketch", "reason": "Native macOS app with excellent performance"},
+  {"tool_slug": "adobe-xd", "reason": "Adobe ecosystem integration, good prototyping"},
+  {"tool_slug": "framer", "reason": "Better for interactive prototypes and animations"},
+  {"tool_slug": "penpot", "reason": "Open source, web-based design tool"}
+]'::jsonb),
+
+('Slack', 'Team communication alternatives to Slack.',
+'[
+  {"tool_slug": "discord", "reason": "Better for communities, free unlimited history"},
+  {"tool_slug": "microsoft-teams", "reason": "Better Office integration, enterprise features"},
+  {"tool_slug": "rocket-chat", "reason": "Open source, self-hosted option available"},
+  {"tool_slug": "element", "reason": "End-to-end encrypted, federated communication"}
+]'::jsonb),
+
+('Zoom', 'Video conferencing alternatives to Zoom.',
+'[
+  {"tool_slug": "google-meet", "reason": "Better integration with Google Workspace"},
+  {"tool_slug": "microsoft-teams", "reason": "Integrated with Office, good for enterprises"},
+  {"tool_slug": "jitsi-meet", "reason": "Open source, no account required"},
+  {"tool_slug": "whereby", "reason": "Simple browser-based meetings, no download required"}
+]'::jsonb);
+
+-- Insert VS pairs
+INSERT INTO vspairs (a_slug, b_slug, matrix, summary, verdict_for) VALUES
+('chatgpt', 'claude',
+'{"price": {"chatgpt": "$20/mo Plus", "claude": "$20/mo Pro"}, "features": ["Conversation", "Code generation", "Analysis", "Creative writing"], "platforms": {"chatgpt": ["Web", "iOS", "Android", "API"], "claude": ["Web", "API"]}, "strengths": {"chatgpt": "Broader platform support, larger knowledge base", "claude": "Better reasoning, safety-focused, longer context"}}'::jsonb,
+'Both are excellent AI assistants with similar pricing. ChatGPT has broader platform support and integration ecosystem, while Claude excels at reasoning and analysis tasks.',
+'{"beginner": "ChatGPT for easier access and tutorials", "team": "Claude for analysis work, ChatGPT for general use", "enterprise": "ChatGPT for broader integration options"}'::jsonb),
+
+('cursor', 'vs-code',
+'{"price": {"cursor": "$20/mo Pro", "vs-code": "Free"}, "features": ["Code editing", "Extensions", "Git integration", "AI assistance"], "platforms": {"cursor": ["Windows", "macOS", "Linux"], "vs-code": ["Windows", "macOS", "Linux", "Web"]}, "strengths": {"cursor": "Native AI integration, modern interface", "vs-code": "Completely free, huge ecosystem, proven stability"}}'::jsonb,
+'Cursor offers cutting-edge AI features in a modern interface, while VS Code provides a mature, free platform with the largest extension ecosystem.',
+'{"beginner": "VS Code for learning and free access", "team": "Cursor for AI-enhanced productivity", "enterprise": "VS Code for cost control, Cursor for AI adoption"}'::jsonb),
+
+('notion-ai', 'obsidian',
+'{"price": {"notion-ai": "$8/mo Plus", "obsidian": "Free personal"}, "features": ["Note-taking", "Knowledge management", "Collaboration", "AI writing"], "platforms": {"notion-ai": ["Web", "iOS", "Android", "Desktop"], "obsidian": ["Windows", "macOS", "Linux", "iOS", "Android"]}, "strengths": {"notion-ai": "AI writing, team collaboration, databases", "obsidian": "Local files, graph view, extensive customization"}}'::jsonb,
+'Notion AI excels at team collaboration and AI-assisted writing, while Obsidian provides powerful personal knowledge management with local file control.',
+'{"beginner": "Notion AI for ease of use", "team": "Notion AI for collaboration", "enterprise": "Notion AI for teams, Obsidian for personal research"}'::jsonb),
+
+('github-copilot', 'cursor',
+'{"price": {"github-copilot": "$10/mo Individual", "cursor": "$20/mo Pro"}, "features": ["Code completion", "AI chat", "Code explanation", "IDE integration"], "platforms": {"github-copilot": ["VS Code", "JetBrains", "Neovim"], "cursor": ["Standalone editor"]}, "strengths": {"github-copilot": "Broad IDE support, GitHub integration", "cursor": "Better AI chat, modern interface, more AI features"}}'::jsonb,
+'GitHub Copilot provides excellent code completion across many IDEs, while Cursor offers a more comprehensive AI-first development experience.',
+'{"beginner": "GitHub Copilot for existing IDE workflows", "team": "Cursor for modern AI development", "enterprise": "GitHub Copilot for enterprise features"}'::jsonb),
+
+('vercel', 'netlify',
+'{"price": {"vercel": "Free hobby, $20/mo Pro", "netlify": "Free starter, $19/mo Pro"}, "features": ["Static hosting", "Serverless functions", "Edge computing", "Form handling"], "platforms": {"vercel": ["Web"], "netlify": ["Web"]}, "strengths": {"vercel": "Better Next.js integration, edge network", "netlify": "Better forms, split testing, CMS integration"}}'::jsonb,
+'Both platforms excel at static site hosting. Vercel is optimized for Next.js and edge computing, while Netlify offers better forms and content management features.',
+'{"beginner": "Netlify for simpler setup", "team": "Vercel for React/Next.js projects", "enterprise": "Both offer enterprise plans"}'::jsonb),
+
+('midjourney', 'dall-e',
+'{"price": {"midjourney": "$10/mo Basic", "dall-e": "$20/115 credits"}, "features": ["Image generation", "Style consistency", "Upscaling", "Variations"], "platforms": {"midjourney": ["Discord", "Web"], "dall-e": ["Web", "API"]}, "strengths": {"midjourney": "Artistic style, community, consistency", "dall-e": "Photorealism, text integration, API access"}}'::jsonb,
+'Midjourney excels at artistic and stylized images with strong community features, while DALL-E provides more photorealistic results and better API integration.',
+'{"beginner": "DALL-E for ease of use", "team": "Midjourney for artistic work", "enterprise": "DALL-E for API integration"}'::jsonb),
+
+('raycast', 'alfred',
+'{"price": {"raycast": "Free, $8/mo Pro", "alfred": "Free, £34 Powerpack"}, "features": ["App launcher", "Workflow automation", "Clipboard manager", "System control"], "platforms": {"raycast": ["macOS"], "alfred": ["macOS"]}, "strengths": {"raycast": "Modern interface, built-in features, free tier", "alfred": "Mature workflows, extensive customization"}}'::jsonb,
+'Raycast offers a modern interface with many built-in features for free, while Alfred provides more mature workflow automation with extensive customization options.',
+'{"beginner": "Raycast for modern interface", "team": "Raycast for collaboration features", "enterprise": "Alfred for complex workflows"}'::jsonb),
+
+('supabase', 'firebase',
+'{"price": {"supabase": "Free, $25/mo Pro", "firebase": "Free, Pay-as-you-go"}, "features": ["Database", "Authentication", "Realtime", "Storage", "Functions"], "platforms": {"supabase": ["Web", "Mobile"], "firebase": ["Web", "Mobile", "Desktop"]}, "strengths": {"supabase": "PostgreSQL, open source, SQL", "firebase": "Mature ecosystem, Google integration, NoSQL"}}'::jsonb,
+'Supabase provides a PostgreSQL-based backend with SQL support and open source philosophy, while Firebase offers a mature NoSQL platform with extensive Google integration.',
+'{"beginner": "Firebase for easier setup", "team": "Supabase for SQL familiarity", "enterprise": "Both offer enterprise features"}'::jsonb);
+
+-- Update category counts based on actual tools
+UPDATE categories SET count = (
+  SELECT COUNT(*) FROM tools 
+  WHERE categories @> ARRAY[categories.name] 
+  AND tools.status = 'published'
+);
+
+-- Update tag counts based on actual tools
+UPDATE tags SET count = (
+  SELECT COUNT(*) FROM tools 
+  WHERE tags @> ARRAY[tags.name] 
+  AND tools.status = 'published'
+);

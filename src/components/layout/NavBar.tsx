@@ -10,13 +10,14 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useTheme } from "next-themes";
+import { t, languages, type Language } from "@/lib/i18n";
 
 interface NavBarProps {
-  language?: string;
-  onLanguageChange?: (lang: string) => void;
+  language?: Language;
+  onLanguageChange?: (lang: Language) => void;
 }
 
-const NavBar = ({ language = "zh", onLanguageChange }: NavBarProps) => {
+const NavBar = ({ language = "en", onLanguageChange }: NavBarProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
@@ -31,10 +32,10 @@ const NavBar = ({ language = "zh", onLanguageChange }: NavBarProps) => {
   };
 
   const navItems = [
-    { href: "/tools", label: language === "zh" ? "工具库" : "Tools" },
-    { href: "/alternatives", label: language === "zh" ? "替代品" : "Alternatives" },
-    { href: "/vs", label: language === "zh" ? "对比" : "Compare" },
-    { href: "/deals", label: language === "zh" ? "优惠" : "Deals" },
+    { href: "/tools", label: t("nav.tools", language) },
+    { href: "/alternatives", label: t("nav.alternatives", language) },
+    { href: "/vs", label: t("nav.vs", language) },
+    { href: "/deals", label: t("nav.deals", language) },
   ];
 
   return (
@@ -49,7 +50,7 @@ const NavBar = ({ language = "zh", onLanguageChange }: NavBarProps) => {
             <div className="flex flex-col">
               <span className="font-bold text-foreground">rect.one</span>
               <span className="text-xs text-muted-foreground -mt-1">
-                {language === "zh" ? "AI & 开发工具导航" : "ToolsHub for AI & Dev"}
+                ToolsHub for AI & Dev
               </span>
             </div>
           </Link>
@@ -60,7 +61,7 @@ const NavBar = ({ language = "zh", onLanguageChange }: NavBarProps) => {
               <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
               <Input
                 type="search"
-                placeholder={language === "zh" ? "搜索工具..." : "Search tools..."}
+                placeholder={t("nav.search.placeholder", language)}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="pl-10 bg-muted/50"
@@ -97,18 +98,20 @@ const NavBar = ({ language = "zh", onLanguageChange }: NavBarProps) => {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent>
-                <DropdownMenuItem onClick={() => onLanguageChange?.("zh")}>
-                  简体中文
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => onLanguageChange?.("en")}>
-                  English
-                </DropdownMenuItem>
+                {Object.entries(languages).map(([code, lang]) => (
+                  <DropdownMenuItem 
+                    key={code} 
+                    onClick={() => onLanguageChange?.(code as Language)}
+                  >
+                    {lang.flag} {lang.name}
+                  </DropdownMenuItem>
+                ))}
               </DropdownMenuContent>
             </DropdownMenu>
 
             <Button asChild variant="default">
               <Link to="/submit">
-                {language === "zh" ? "提交工具" : "Submit Tool"}
+                {t("nav.submit", language)}
               </Link>
             </Button>
           </div>
@@ -134,7 +137,7 @@ const NavBar = ({ language = "zh", onLanguageChange }: NavBarProps) => {
                   <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                   <Input
                     type="search"
-                    placeholder={language === "zh" ? "搜索工具..." : "Search tools..."}
+                    placeholder={t("nav.search.placeholder", language)}
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     className="pl-10"
@@ -160,23 +163,25 @@ const NavBar = ({ language = "zh", onLanguageChange }: NavBarProps) => {
                   onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
                 >
                   {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
-                  {language === "zh" ? "主题" : "Theme"}
+                  Theme
                 </Button>
 
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button variant="ghost" size="sm">
                       <Globe className="h-4 w-4 mr-2" />
-                      {language === "zh" ? "中文" : "English"}
+                      {languages[language]?.flag} {languages[language]?.name}
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent>
-                    <DropdownMenuItem onClick={() => onLanguageChange?.("zh")}>
-                      简体中文
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => onLanguageChange?.("en")}>
-                      English
-                    </DropdownMenuItem>
+                    {Object.entries(languages).map(([code, lang]) => (
+                      <DropdownMenuItem 
+                        key={code} 
+                        onClick={() => onLanguageChange?.(code as Language)}
+                      >
+                        {lang.flag} {lang.name}
+                      </DropdownMenuItem>
+                    ))}
                   </DropdownMenuContent>
                 </DropdownMenu>
               </div>
@@ -184,7 +189,7 @@ const NavBar = ({ language = "zh", onLanguageChange }: NavBarProps) => {
               <div className="px-3 py-2">
                 <Button asChild className="w-full">
                   <Link to="/submit" onClick={() => setIsMenuOpen(false)}>
-                    {language === "zh" ? "提交工具" : "Submit Tool"}
+                    {t("nav.submit", language)}
                   </Link>
                 </Button>
               </div>
