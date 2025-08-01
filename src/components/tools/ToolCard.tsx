@@ -5,26 +5,15 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useState } from "react";
 
+import type { Tool } from "@/lib/types";
+import type { Language } from "@/lib/i18n";
+
 interface ToolCardProps {
-  tool: {
-    id: string;
-    slug: string;
-    name: string;
-    slogan: string;
-    logo: string;
-    website: string;
-    categories: string[];
-    tags: string[];
-    pricing: Array<{ plan: string; price: string; notes: string }>;
-    isOpenSource: boolean;
-    hasFreeTrial: boolean;
-    supportsCN: boolean;
-    score?: { ease: number; value: number; features: number; docs: number };
-  };
-  language?: string;
+  tool: Tool;
+  language?: Language;
 }
 
-const ToolCard = ({ tool, language = "zh" }: ToolCardProps) => {
+const ToolCard = ({ tool, language = "en" }: ToolCardProps) => {
   const [isFavorited, setIsFavorited] = useState(false);
   const [imageError, setImageError] = useState(false);
 
@@ -75,7 +64,7 @@ const ToolCard = ({ tool, language = "zh" }: ToolCardProps) => {
             <div className="flex-shrink-0">
               {!imageError ? (
                 <img
-                  src={tool.logo}
+                  src={tool.logo_url || ''}
                   alt={`${tool.name} logo`}
                   className="w-12 h-12 rounded-lg object-cover"
                   onError={() => setImageError(true)}
@@ -123,19 +112,19 @@ const ToolCard = ({ tool, language = "zh" }: ToolCardProps) => {
 
         {/* Features */}
         <div className="flex items-center space-x-4 mb-4">
-          {tool.isOpenSource && (
+          {tool.is_open_source && (
             <div className="flex items-center space-x-1 text-xs text-muted-foreground">
               <Shield className="h-3 w-3" />
               <span>{language === "zh" ? "开源" : "Open Source"}</span>
             </div>
           )}
-          {tool.supportsCN && (
+          {tool.supports_cn && (
             <div className="flex items-center space-x-1 text-xs text-muted-foreground">
               <Globe className="h-3 w-3" />
               <span>{language === "zh" ? "中文" : "Chinese"}</span>
             </div>
           )}
-          {tool.hasFreeTrial && (
+          {tool.has_free_trial && (
             <div className="flex items-center space-x-1 text-xs text-muted-foreground">
               <Zap className="h-3 w-3" />
               <span>{language === "zh" ? "试用" : "Trial"}</span>
@@ -182,7 +171,7 @@ const ToolCard = ({ tool, language = "zh" }: ToolCardProps) => {
         </Button>
         <Button asChild size="sm" className="flex-1">
           <a 
-            href={`${tool.website}?ref=rect.one`} 
+            href={`${tool.website_url}?ref=rect.one`} 
             target="_blank" 
             rel="noopener noreferrer"
             className="flex items-center space-x-1"

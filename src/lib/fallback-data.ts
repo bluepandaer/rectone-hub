@@ -52,24 +52,28 @@ const rawToolsData = [
 
 const toolsData = rawToolsData.map(convertToolData);
 
-const categoriesData = [
+const categoriesData: Category[] = [
   {
     id: "writing",
     slug: "writing",
     name: "Writing",
+    description: "AI writing tools and content creation",
     count: 4,
     created_at: "2024-01-01T00:00:00Z",
     updated_at: "2024-01-01T00:00:00Z"
   }
 ];
 
-const dealsData = [
+const dealsData: Deal[] = [
   {
     id: "deal-1",
     tool_slug: "chatgpt",
     title: "ChatGPT Deal",
     url: "https://chat.openai.com/",
     description: "Special offer",
+    source: "official",
+    starts_at: "2024-01-01T00:00:00Z",
+    ends_at: "2024-12-31T00:00:00Z",
     is_active: true,
     created_at: "2024-01-01T00:00:00Z",
     updated_at: "2024-01-01T00:00:00Z"

@@ -1,328 +1,330 @@
-import { useState, useMemo } from "react";
+import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
+import { Filter, SortDesc } from "lucide-react";
 import NavBar from "@/components/layout/NavBar";
 import Footer from "@/components/layout/Footer";
-import ToolCard from "@/components/tools/ToolCard";
-import { Input } from "@/components/ui/input";
+import ToolGrid from "@/components/shared/ToolGrid";
+import LoadingState from "@/components/shared/LoadingState";
+import ErrorState from "@/components/shared/ErrorState";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
-import { Search, Filter, X } from "lucide-react";
-import toolsData from "@/data/tools.json";
-import categoriesData from "@/data/categories.json";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useLanguage } from "@/hooks/useLanguage";
+import { t, Language } from "@/lib/i18n";
+import { getTools, getCategories, getTags } from "@/lib/api";
+import type { Tool, Category, Tag, ToolFilters, SearchResult } from "@/lib/types";
 
 const Tools = () => {
+  const { language } = useLanguage();
   const [searchParams, setSearchParams] = useSearchParams();
-  const [language, setLanguage] = useState("zh");
-  
-  // Filter states
-  const [searchQuery, setSearchQuery] = useState(searchParams.get("q") || "");
-  const [selectedCategory, setSelectedCategory] = useState(searchParams.get("category") || "");
-  const [selectedTags, setSelectedTags] = useState<string[]>(
-    searchParams.get("tags")?.split(",").filter(Boolean) || []
-  );
-  const [sortBy, setSortBy] = useState(searchParams.get("sort") || "trending");
-  const [priceFilter, setPriceFilter] = useState(searchParams.get("price") || "");
-  const [platformFilter, setPlatformFilter] = useState(searchParams.get("platform") || "");
-  
-  // Get all unique tags
-  const allTags = Array.from(new Set(toolsData.flatMap(tool => tool.tags)));
-  const allPlatforms = Array.from(new Set(toolsData.flatMap(tool => tool.platforms)));
+  const [result, setResult] = useState<SearchResult<Tool>>({ data: [], total: 0, page: 1, limit: 24, has_more: false });
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [tags, setTags] = useState<Tag[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [showFilters, setShowFilters] = useState(false);
 
-  // Filter and sort tools
-  const filteredTools = useMemo(() => {
-    let filtered = toolsData.filter(tool => {
-      // Search query
-      if (searchQuery) {
-        const query = searchQuery.toLowerCase();
-        if (!tool.name.toLowerCase().includes(query) && 
-            !tool.slogan.toLowerCase().includes(query) &&
-            !tool.tags.some(tag => tag.toLowerCase().includes(query)) &&
-            !tool.categories.some(cat => cat.toLowerCase().includes(query))) {
-          return false;
-        }
-      }
-
-      // Category filter
-      if (selectedCategory && !tool.categories.includes(selectedCategory)) {
-        return false;
-      }
-
-      // Tags filter
-      if (selectedTags.length > 0 && !selectedTags.some(tag => tool.tags.includes(tag))) {
-        return false;
-      }
-
-      // Price filter
-      if (priceFilter === "free" && !tool.pricing.some(p => p.price === "$0")) {
-        return false;
-      }
-      if (priceFilter === "paid" && !tool.pricing.some(p => p.price !== "$0")) {
-        return false;
-      }
-
-      // Platform filter
-      if (platformFilter && !tool.platforms.includes(platformFilter)) {
-        return false;
-      }
-
-      return true;
-    });
-
-    // Sort
-    switch (sortBy) {
-      case "name":
-        filtered.sort((a, b) => a.name.localeCompare(b.name));
-        break;
-      case "newest":
-        filtered.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
-        break;
-      case "updated":
-        filtered.sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime());
-        break;
-      case "rating":
-        filtered.sort((a, b) => {
-          const avgA = a.score ? (a.score.ease + a.score.value + a.score.features + a.score.docs) / 4 : 0;
-          const avgB = b.score ? (b.score.ease + b.score.value + b.score.features + b.score.docs) / 4 : 0;
-          return avgB - avgA;
-        });
-        break;
-      default: // trending
-        // Mock trending based on score and recency
-        filtered.sort((a, b) => {
-          const scoreA = a.score ? (a.score.ease + a.score.value + a.score.features + a.score.docs) / 4 : 0;
-          const scoreB = b.score ? (b.score.ease + b.score.value + b.score.features + b.score.docs) / 4 : 0;
-          const recentA = new Date(a.updatedAt).getTime();
-          const recentB = new Date(b.updatedAt).getTime();
-          return (scoreB * 0.7 + recentB * 0.3) - (scoreA * 0.7 + recentA * 0.3);
-        });
-    }
-
-    return filtered;
-  }, [searchQuery, selectedCategory, selectedTags, sortBy, priceFilter, platformFilter]);
-
-  const updateSearchParams = () => {
-    const params = new URLSearchParams();
-    if (searchQuery) params.set("q", searchQuery);
-    if (selectedCategory) params.set("category", selectedCategory);
-    if (selectedTags.length > 0) params.set("tags", selectedTags.join(","));
-    if (sortBy !== "trending") params.set("sort", sortBy);
-    if (priceFilter) params.set("price", priceFilter);
-    if (platformFilter) params.set("platform", platformFilter);
-    setSearchParams(params);
+  // Get current filters from URL
+  const currentFilters: ToolFilters = {
+    query: searchParams.get('q') || '',
+    category: searchParams.get('category') || undefined,
+    tags: searchParams.getAll('tag'),
+    platforms: searchParams.getAll('platform'),
+    pricing: searchParams.get('pricing') as 'free' | 'paid' | 'freemium' || undefined,
+    is_open_source: searchParams.get('open_source') === 'true' || undefined,
+    supports_cn: searchParams.get('chinese') === 'true' || undefined,
+    has_free_trial: searchParams.get('trial') === 'true' || undefined,
+    sort: searchParams.get('sort') as 'trending' | 'newest' | 'updated' | 'rating' | 'name' || 'trending',
+    page: parseInt(searchParams.get('page') || '1'),
+    limit: 24,
   };
 
-  const toggleTag = (tag: string) => {
-    setSelectedTags(prev => 
-      prev.includes(tag) 
-        ? prev.filter(t => t !== tag)
-        : [...prev, tag]
-    );
+  const updateFilter = (key: string, value: string | string[] | boolean | undefined) => {
+    const newParams = new URLSearchParams(searchParams);
+    
+    if (value === undefined || value === '' || (Array.isArray(value) && value.length === 0)) {
+      newParams.delete(key);
+    } else if (Array.isArray(value)) {
+      newParams.delete(key);
+      value.forEach(v => newParams.append(key, v));
+    } else {
+      newParams.set(key, value.toString());
+    }
+    
+    // Reset to page 1 when filters change
+    if (key !== 'page') {
+      newParams.delete('page');
+    }
+    
+    setSearchParams(newParams);
+  };
+
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        setLoading(true);
+        const [toolsResult, categoriesData, tagsData] = await Promise.all([
+          getTools(currentFilters),
+          getCategories(),
+          getTags()
+        ]);
+
+        setResult(toolsResult);
+        setCategories(categoriesData);
+        setTags(tagsData);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Failed to load tools');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadData();
+  }, [searchParams]);
+
+  const handleSearch = (query: string) => {
+    updateFilter('q', query);
+  };
+
+  const handleSort = (sort: string) => {
+    updateFilter('sort', sort);
+  };
+
+  const handlePageChange = (page: number) => {
+    updateFilter('page', page.toString());
   };
 
   const clearFilters = () => {
-    setSearchQuery("");
-    setSelectedCategory("");
-    setSelectedTags([]);
-    setSortBy("trending");
-    setPriceFilter("");
-    setPlatformFilter("");
     setSearchParams(new URLSearchParams());
   };
 
-  const text = {
-    zh: {
-      title: "AI & 开发工具库",
-      subtitle: "发现最优秀的AI和开发工具",
-      searchPlaceholder: "搜索工具名称、标签或分类...",
-      filters: "筛选",
-      sort: "排序",
-      category: "分类",
-      allCategories: "所有分类",
-      tags: "标签",
-      price: "价格",
-      platform: "平台",
-      allPlatforms: "所有平台",
-      trending: "热门",
-      newest: "最新",
-      updated: "最近更新",
-      rating: "评分",
-      name: "名称",
-      free: "免费",
-      paid: "付费",
-      clearFilters: "清除筛选",
-      results: "个结果",
-      noResults: "未找到匹配的工具",
-      noResultsDesc: "尝试调整搜索条件或",
-      submitTool: "提交新工具"
-    },
-    en: {
-      title: "AI & Dev Tools",
-      subtitle: "Discover the best AI and development tools",
-      searchPlaceholder: "Search tools, tags, or categories...",
-      filters: "Filters",
-      sort: "Sort",
-      category: "Category",
-      allCategories: "All Categories",
-      tags: "Tags",
-      price: "Price",
-      platform: "Platform",
-      allPlatforms: "All Platforms",
-      trending: "Trending",
-      newest: "Newest",
-      updated: "Recently Updated",
-      rating: "Rating",
-      name: "Name",
-      free: "Free",
-      paid: "Paid",
-      clearFilters: "Clear Filters",
-      results: "results",
-      noResults: "No tools found",
-      noResultsDesc: "Try adjusting your search criteria or",
-      submitTool: "submit a new tool"
-    }
-  };
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background">
+        <NavBar />
+        <LoadingState />
+        <Footer />
+      </div>
+    );
+  }
 
-  const t = text[language as keyof typeof text];
+  if (error) {
+    return (
+      <div className="min-h-screen bg-background">
+        <NavBar />
+        <ErrorState error={error} language={language} />
+        <Footer />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background">
-      <NavBar language={language} onLanguageChange={setLanguage} />
-
-      <main className="container mx-auto px-4 py-8">
+      <NavBar />
+      
+      <div className="container mx-auto px-4 py-8">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-4xl font-bold mb-2">{t.title}</h1>
-          <p className="text-xl text-muted-foreground">{t.subtitle}</p>
+          <h1 className="text-3xl font-bold mb-4">{t("tools.title", language)}</h1>
+          <p className="text-muted-foreground">{t("tools.description", language)}</p>
         </div>
 
-        {/* Search & Filters */}
-        <div className="mb-8 space-y-4">
-          {/* Search Bar */}
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+        {/* Search and Sort */}
+        <div className="flex flex-col md:flex-row gap-4 mb-6">
+          <div className="flex-1">
             <Input
-              type="search"
-              placeholder={t.searchPlaceholder}
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              onKeyDown={(e) => e.key === "Enter" && updateSearchParams()}
-              className="pl-10"
+              placeholder={t("tools.searchPlaceholder", language)}
+              value={currentFilters.query}
+              onChange={(e) => handleSearch(e.target.value)}
+              className="w-full"
             />
           </div>
-
-          {/* Filters Row */}
-          <div className="flex flex-wrap gap-4 items-center">
-            {/* Category */}
-            <Select value={selectedCategory} onValueChange={setSelectedCategory}>
-              <SelectTrigger className="w-[200px]">
-                <SelectValue placeholder={t.category} />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="">{t.allCategories}</SelectItem>
-                {categoriesData.map(category => (
-                  <SelectItem key={category.id} value={category.name}>
-                    {language === "zh" ? category.name_zh : category.name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-
-            {/* Price */}
-            <Select value={priceFilter} onValueChange={setPriceFilter}>
-              <SelectTrigger className="w-[120px]">
-                <SelectValue placeholder={t.price} />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="">{t.price}</SelectItem>
-                <SelectItem value="free">{t.free}</SelectItem>
-                <SelectItem value="paid">{t.paid}</SelectItem>
-              </SelectContent>
-            </Select>
-
-            {/* Platform */}
-            <Select value={platformFilter} onValueChange={setPlatformFilter}>
-              <SelectTrigger className="w-[150px]">
-                <SelectValue placeholder={t.platform} />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="">{t.allPlatforms}</SelectItem>
-                {allPlatforms.map(platform => (
-                  <SelectItem key={platform} value={platform}>
-                    {platform}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-
-            {/* Sort */}
-            <Select value={sortBy} onValueChange={setSortBy}>
-              <SelectTrigger className="w-[150px]">
+          <div className="flex gap-2">
+            <Select value={currentFilters.sort} onValueChange={handleSort}>
+              <SelectTrigger className="w-[180px]">
+                <SortDesc className="h-4 w-4 mr-2" />
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="trending">{t.trending}</SelectItem>
-                <SelectItem value="newest">{t.newest}</SelectItem>
-                <SelectItem value="updated">{t.updated}</SelectItem>
-                <SelectItem value="rating">{t.rating}</SelectItem>
-                <SelectItem value="name">{t.name}</SelectItem>
+                <SelectItem value="trending">{t("tools.sort.trending", language)}</SelectItem>
+                <SelectItem value="rating">{t("tools.sort.rating", language)}</SelectItem>
+                <SelectItem value="newest">{t("tools.sort.newest", language)}</SelectItem>
+                <SelectItem value="updated">{t("tools.sort.updated", language)}</SelectItem>
+                <SelectItem value="name">{t("tools.sort.name", language)}</SelectItem>
               </SelectContent>
             </Select>
+            <Button
+              variant="outline"
+              onClick={() => setShowFilters(!showFilters)}
+              className="md:hidden"
+            >
+              <Filter className="h-4 w-4 mr-2" />
+              {t("tools.filters", language)}
+            </Button>
+          </div>
+        </div>
 
-            {/* Clear Filters */}
-            {(searchQuery || selectedCategory || selectedTags.length > 0 || priceFilter || platformFilter) && (
-              <Button variant="outline" onClick={clearFilters}>
-                <X className="h-4 w-4 mr-2" />
-                {t.clearFilters}
-              </Button>
+        <div className="flex flex-col lg:flex-row gap-8">
+          {/* Filters Sidebar */}
+          <div className={`lg:w-80 ${showFilters ? 'block' : 'hidden lg:block'}`}>
+            <Card>
+              <CardHeader>
+                <div className="flex items-center justify-between">
+                  <CardTitle>{t("tools.filters", language)}</CardTitle>
+                  <Button variant="ghost" size="sm" onClick={clearFilters}>
+                    {t("tools.clearFilters", language)}
+                  </Button>
+                </div>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                {/* Categories */}
+                <div>
+                  <h3 className="font-medium mb-3">{t("tools.category", language)}</h3>
+                  <Select value={currentFilters.category || ''} onValueChange={(value) => updateFilter('category', value || undefined)}>
+                    <SelectTrigger>
+                      <SelectValue placeholder={t("tools.selectCategory", language)} />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="">{t("tools.allCategories", language)}</SelectItem>
+                      {categories.map((category) => (
+                        <SelectItem key={category.id} value={category.slug}>
+                          {category.name} ({category.count})
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                {/* Pricing */}
+                <div>
+                  <h3 className="font-medium mb-3">{t("tools.pricing", language)}</h3>
+                  <Select value={currentFilters.pricing || ''} onValueChange={(value) => updateFilter('pricing', value || undefined)}>
+                    <SelectTrigger>
+                      <SelectValue placeholder={t("tools.selectPricing", language)} />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="">{t("tools.allPricing", language)}</SelectItem>
+                      <SelectItem value="free">{t("tools.free", language)}</SelectItem>
+                      <SelectItem value="freemium">{t("tools.freemium", language)}</SelectItem>
+                      <SelectItem value="paid">{t("tools.paid", language)}</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                {/* Features */}
+                <div>
+                  <h3 className="font-medium mb-3">{t("tools.features", language)}</h3>
+                  <div className="space-y-3">
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        id="open-source"
+                        checked={currentFilters.is_open_source || false}
+                        onCheckedChange={(checked) => updateFilter('open_source', checked || undefined)}
+                      />
+                      <label htmlFor="open-source" className="text-sm">
+                        {t("tools.openSource", language)}
+                      </label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        id="chinese"
+                        checked={currentFilters.supports_cn || false}
+                        onCheckedChange={(checked) => updateFilter('chinese', checked || undefined)}
+                      />
+                      <label htmlFor="chinese" className="text-sm">
+                        {t("tools.chineseSupport", language)}
+                      </label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        id="trial"
+                        checked={currentFilters.has_free_trial || false}
+                        onCheckedChange={(checked) => updateFilter('trial', checked || undefined)}
+                      />
+                      <label htmlFor="trial" className="text-sm">
+                        {t("tools.freeTrial", language)}
+                      </label>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Active Filters */}
+                {(currentFilters.query || currentFilters.category || currentFilters.tags?.length || currentFilters.pricing || currentFilters.is_open_source || currentFilters.supports_cn || currentFilters.has_free_trial) && (
+                  <div>
+                    <h3 className="font-medium mb-3">{t("tools.activeFilters", language)}</h3>
+                    <div className="flex flex-wrap gap-2">
+                      {currentFilters.query && (
+                        <Badge variant="secondary" className="cursor-pointer" onClick={() => updateFilter('q', undefined)}>
+                          "{currentFilters.query}" ×
+                        </Badge>
+                      )}
+                      {currentFilters.category && (
+                        <Badge variant="secondary" className="cursor-pointer" onClick={() => updateFilter('category', undefined)}>
+                          {categories.find(c => c.slug === currentFilters.category)?.name} ×
+                        </Badge>
+                      )}
+                      {currentFilters.pricing && (
+                        <Badge variant="secondary" className="cursor-pointer" onClick={() => updateFilter('pricing', undefined)}>
+                          {t(`tools.${currentFilters.pricing}`, language)} ×
+                        </Badge>
+                      )}
+                    </div>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Tools Grid */}
+          <div className="flex-1">
+            {/* Results Count */}
+            <div className="flex items-center justify-between mb-6">
+              <p className="text-muted-foreground">
+                {result.total} {t("tools.results", language)}
+              </p>
+            </div>
+
+            {/* Tools */}
+            {result.data.length > 0 ? (
+              <>
+                <ToolGrid 
+                  tools={result.data} 
+                  title=""
+                  language={language as Language}
+                  showAll={true}
+                />
+                
+                {/* Pagination */}
+                {result.has_more && (
+                  <div className="flex justify-center mt-8">
+                    <Button 
+                      onClick={() => handlePageChange(result.page + 1)}
+                      variant="outline"
+                    >
+                      {t("tools.loadMore", language)}
+                    </Button>
+                  </div>
+                )}
+              </>
+            ) : (
+              <div className="text-center py-12">
+                <h3 className="text-lg font-semibold mb-2">{t("tools.noResults", language)}</h3>
+                <p className="text-muted-foreground mb-4">
+                  {t("tools.noResultsDescription", language)}
+                </p>
+                <Button asChild>
+                  <a href="/submit">{t("tools.submitTool", language)}</a>
+                </Button>
+              </div>
             )}
           </div>
-
-          {/* Tags */}
-          <div>
-            <div className="flex flex-wrap gap-2">
-              {allTags.slice(0, 20).map(tag => (
-                <Badge
-                  key={tag}
-                  variant={selectedTags.includes(tag) ? "default" : "outline"}
-                  className="cursor-pointer"
-                  onClick={() => toggleTag(tag)}
-                >
-                  {tag}
-                </Badge>
-              ))}
-            </div>
-          </div>
         </div>
+      </div>
 
-        {/* Results Count */}
-        <div className="mb-6">
-          <p className="text-muted-foreground">
-            {filteredTools.length} {t.results}
-          </p>
-        </div>
-
-        {/* Tools Grid */}
-        {filteredTools.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredTools.map(tool => (
-              <ToolCard key={tool.id} tool={tool} language={language} />
-            ))}
-          </div>
-        ) : (
-          <div className="text-center py-12">
-            <h3 className="text-lg font-semibold mb-2">{t.noResults}</h3>
-            <p className="text-muted-foreground mb-4">
-              {t.noResultsDesc}{" "}
-              <Button variant="link" className="p-0 h-auto">
-                {t.submitTool}
-              </Button>
-            </p>
-          </div>
-        )}
-      </main>
-
-      <Footer language={language} />
+      <Footer />
     </div>
   );
 };
