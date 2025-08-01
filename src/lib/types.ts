@@ -171,20 +171,17 @@ export interface VSVerdict {
 export interface PendingSubmission {
   id?: string;
   name: string;
-  website_url: string;
-  slogan: string;
-  description?: string;
-  category?: string;
+  website_url?: string | null;
+  slogan?: string | null;
+  categories: string[];
   tags: string[];
-  platforms: string[];
-  pricing_type?: string;
+  price_type?: string | null;
   has_free_trial: boolean;
-  is_open_source: boolean;
-  supports_cn: boolean;
-  logo_url?: string;
-  contact_email?: string;
-  additional_notes?: string;
-  status: 'pending' | 'approved' | 'rejected';
+  platforms: string[];
+  integrations: string[];
+  logo_url?: string | null;
+  contact?: string | null;
+  notes_md?: string | null;
   created_at?: string;
 }
 

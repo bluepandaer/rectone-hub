@@ -74,7 +74,7 @@ JSON files are located in `src/data/`:
 - `alternatives.json` - Tool alternatives
 - `vspairs.json` - Tool comparisons
 
-## Database Schema
+## Database Schema & RLS Setup
 
 ### Tables
 
@@ -84,13 +84,50 @@ JSON files are located in `src/data/`:
 - **deals**: Active deals and offers
 - **alternatives**: Alternative tool suggestions
 - **vspairs**: Tool comparison pairs
-- **pending_submissions**: User-submitted tools awaiting review
+- **pending_submissions**: User-submitted tools awaiting review (secure RLS)
 
-### RLS Policies
+### Setting Up the Database
 
-- ✅ Anonymous **READ** access to all data tables
-- ✅ Anonymous **INSERT** to pending_submissions only
-- ❌ Anonymous **UPDATE/DELETE** denied everywhere
+**Execute this SQL in your Supabase project** (SQL Editor or CLI):
+
+```sql
+-- Create pending_submissions table with secure RLS
+create table if not exists public.pending_submissions(
+  id uuid primary key default gen_random_uuid(),
+  created_at timestamptz default now(),
+  name text not null,
+  website_url text,
+  slogan text,
+  categories text[] default '{}',
+  tags text[] default '{}',
+  price_type text,
+  has_free_trial boolean default false,
+  platforms text[] default '{}',
+  integrations text[] default '{}',
+  logo_url text,
+  contact text,
+  notes_md text
+);
+
+-- Enable Row Level Security
+alter table public.pending_submissions enable row level security;
+
+-- RLS Policies
+drop policy if exists "Allow anonymous insert" on public.pending_submissions;
+create policy "Allow anonymous insert" on public.pending_submissions
+  for insert to anon with check (true);
+
+-- Deny anonymous read/update/delete
+revoke select, update, delete on public.pending_submissions from anon;
+grant insert on public.pending_submissions to anon;
+```
+
+### RLS Security Model
+
+- ✅ Anonymous **READ** access to all data tables (tools, categories, etc.)
+- ✅ Anonymous **INSERT** to pending_submissions only  
+- ❌ Anonymous **READ/UPDATE/DELETE** denied on pending_submissions
+- ✅ Service role has full admin access
 
 ## Adding Content
 

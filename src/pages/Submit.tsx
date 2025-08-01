@@ -16,41 +16,49 @@ import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 import { useLanguage } from "@/hooks/useLanguage";
 import { t } from "@/lib/i18n";
+import { submitTool } from "@/lib/api";
+import { buildMeta } from "@/lib/seo";
+import SEOHead from "@/components/shared/SEOHead";
 
 const formSchema = z.object({
   name: z.string().min(1, "Tool name is required"),
-  website_url: z.string().url("Please enter a valid URL"),
-  slogan: z.string().min(1, "Slogan is required"),
-  description: z.string().optional(),
-  category: z.string().optional(),
+  website_url: z.string().url("Please enter a valid URL").optional().or(z.literal("")),
+  slogan: z.string().optional(),
+  categories: z.array(z.string()).default([]),
   tags: z.array(z.string()).default([]),
-  platforms: z.array(z.string()).default([]),
-  pricing_type: z.enum(["free", "freemium", "paid"]).optional(),
+  price_type: z.enum(["free", "freemium", "paid"]).optional(),
   has_free_trial: z.boolean().default(false),
-  is_open_source: z.boolean().default(false),
-  supports_cn: z.boolean().default(false),
+  platforms: z.array(z.string()).default([]),
+  integrations: z.array(z.string()).default([]),
   logo_url: z.string().url().optional().or(z.literal("")),
-  contact_email: z.string().email().optional().or(z.literal("")),
-  additional_notes: z.string().optional(),
+  contact: z.string().email().optional().or(z.literal("")),
+  notes_md: z.string().optional(),
 });
 
 type FormData = z.infer<typeof formSchema>;
 
-const categories = [
-  "ai-writing", "productivity", "development", "design", "marketing", 
-  "analytics", "communication", "project-management", "note-taking", "code-editors"
+const availableCategories = [
+  "Writing", "Coding", "Design", "Productivity", "Data", "Marketing", 
+  "Communication", "Project Management", "Analytics", "Art"
 ];
 
-const platforms = [
+const availablePlatforms = [
   "Web", "Windows", "macOS", "Linux", "iOS", "Android", "API", "Chrome Extension"
 ];
 
 const Submit = () => {
-  const { language, setLanguage } = useLanguage();
+  const { language } = useLanguage();
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [newTag, setNewTag] = useState("");
   const [newPlatform, setNewPlatform] = useState("");
+  const [newIntegration, setNewIntegration] = useState("");
+
+  const meta = buildMeta({
+    title: "Submit AI Tool - rect.one",
+    description: "Submit your AI tool to be featured on rect.one. Help the community discover your product.",
+    path: "/submit"
+  });
 
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
@@ -58,16 +66,14 @@ const Submit = () => {
       name: "",
       website_url: "",
       slogan: "",
-      description: "",
-      category: "",
+      categories: [],
       tags: [],
       platforms: [],
+      integrations: [],
       has_free_trial: false,
-      is_open_source: false,
-      supports_cn: false,
       logo_url: "",
-      contact_email: "",
-      additional_notes: "",
+      contact: "",
+      notes_md: "",
     },
   });
 
@@ -75,9 +81,23 @@ const Submit = () => {
     setIsSubmitting(true);
     
     try {
-      // Here you would normally submit to your API
-      // For now, we'll just simulate a submission
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      // Submit to Supabase
+      const submission = await submitTool({
+        name: data.name,
+        website_url: data.website_url || null,
+        slogan: data.slogan || null,
+        categories: data.categories,
+        tags: data.tags,
+        price_type: data.price_type || null,
+        has_free_trial: data.has_free_trial,
+        platforms: data.platforms,
+        integrations: data.integrations,
+        logo_url: data.logo_url || null,
+        contact: data.contact || null,
+        notes_md: data.notes_md || null,
+      });
+      
+      console.log('Submission successful:', submission.id);
       
       toast({
         title: t("submit.success", language),
@@ -86,9 +106,10 @@ const Submit = () => {
       
       form.reset();
     } catch (error) {
+      console.error('Submission error:', error);
       toast({
         title: t("submit.error", language),
-        description: t("submit.errorMessage", language),
+        description: error instanceof Error ? error.message : t("submit.errorMessage", language),
         variant: "destructive",
       });
     } finally {
@@ -118,8 +139,30 @@ const Submit = () => {
     form.setValue("platforms", form.getValues("platforms").filter(platform => platform !== platformToRemove));
   };
 
+  const addIntegration = () => {
+    if (newIntegration.trim() && !form.getValues("integrations").includes(newIntegration.trim())) {
+      form.setValue("integrations", [...form.getValues("integrations"), newIntegration.trim()]);
+      setNewIntegration("");
+    }
+  };
+
+  const removeIntegration = (integrationToRemove: string) => {
+    form.setValue("integrations", form.getValues("integrations").filter(integration => integration !== integrationToRemove));
+  };
+
+  const addCategory = (category: string) => {
+    if (!form.getValues("categories").includes(category)) {
+      form.setValue("categories", [...form.getValues("categories"), category]);
+    }
+  };
+
+  const removeCategory = (categoryToRemove: string) => {
+    form.setValue("categories", form.getValues("categories").filter(cat => cat !== categoryToRemove));
+  };
+
   return (
     <div className="min-h-screen bg-background">
+      <SEOHead meta={meta} />
       <NavBar />
       
       <div className="container mx-auto px-4 py-8 max-w-2xl">
@@ -158,7 +201,7 @@ const Submit = () => {
                     name="website_url"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>{t("submit.website", language)} *</FormLabel>
+                        <FormLabel>{t("submit.website", language)}</FormLabel>
                         <FormControl>
                           <Input placeholder="https://example.com" {...field} />
                         </FormControl>
@@ -172,7 +215,7 @@ const Submit = () => {
                     name="slogan"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>{t("submit.slogan", language)} *</FormLabel>
+                        <FormLabel>{t("submit.slogan", language)}</FormLabel>
                         <FormControl>
                           <Input placeholder="Brief description of what the tool does" {...field} />
                         </FormControl>
@@ -183,7 +226,7 @@ const Submit = () => {
                   
                   <FormField
                     control={form.control}
-                    name="description"
+                    name="notes_md"
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>{t("submit.detailedDescription", language)}</FormLabel>
@@ -204,26 +247,34 @@ const Submit = () => {
                 <div className="space-y-4">
                   <h3 className="text-lg font-semibold">{t("submit.categorization", language)}</h3>
                   
+                  {/* Categories */}
                   <FormField
                     control={form.control}
-                    name="category"
+                    name="categories"
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>{t("submit.category", language)}</FormLabel>
-                        <Select onValueChange={field.onChange} defaultValue={field.value}>
-                          <FormControl>
+                        <div className="space-y-2">
+                          <Select onValueChange={addCategory}>
                             <SelectTrigger>
-                              <SelectValue placeholder="Select a category" />
+                              <SelectValue placeholder="Select categories" />
                             </SelectTrigger>
-                          </FormControl>
-                          <SelectContent>
-                            {categories.map((category) => (
-                              <SelectItem key={category} value={category}>
-                                {category}
-                              </SelectItem>
+                            <SelectContent>
+                              {availableCategories.filter(cat => !field.value.includes(cat)).map((category) => (
+                                <SelectItem key={category} value={category}>
+                                  {category}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                          <div className="flex flex-wrap gap-2">
+                            {field.value.map((category) => (
+                              <Badge key={category} variant="secondary" className="cursor-pointer" onClick={() => removeCategory(category)}>
+                                {category} ×
+                              </Badge>
                             ))}
-                          </SelectContent>
-                        </Select>
+                          </div>
+                        </div>
                         <FormMessage />
                       </FormItem>
                     )}
@@ -280,7 +331,7 @@ const Submit = () => {
                                 <SelectValue placeholder="Select platform" />
                               </SelectTrigger>
                               <SelectContent>
-                                {platforms.filter(p => !field.value.includes(p)).map((platform) => (
+                                {availablePlatforms.filter(p => !field.value.includes(p)).map((platform) => (
                                   <SelectItem key={platform} value={platform}>
                                     {platform}
                                   </SelectItem>
@@ -309,9 +360,41 @@ const Submit = () => {
                     )}
                   />
 
+                  {/* Integrations */}
                   <FormField
                     control={form.control}
-                    name="pricing_type"
+                    name="integrations"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Integrations</FormLabel>
+                        <div className="space-y-2">
+                          <div className="flex gap-2">
+                            <Input
+                              placeholder="Add an integration"
+                              value={newIntegration}
+                              onChange={(e) => setNewIntegration(e.target.value)}
+                              onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), addIntegration())}
+                            />
+                            <Button type="button" onClick={addIntegration} variant="outline">
+                              Add
+                            </Button>
+                          </div>
+                          <div className="flex flex-wrap gap-2">
+                            {field.value.map((integration) => (
+                              <Badge key={integration} variant="secondary" className="cursor-pointer" onClick={() => removeIntegration(integration)}>
+                                {integration} ×
+                              </Badge>
+                            ))}
+                          </div>
+                        </div>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name="price_type"
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>{t("submit.pricingType", language)}</FormLabel>
@@ -351,42 +434,6 @@ const Submit = () => {
                         </FormItem>
                       )}
                     />
-
-                    <FormField
-                      control={form.control}
-                      name="is_open_source"
-                      render={({ field }) => (
-                        <FormItem className="flex flex-row items-start space-x-3 space-y-0">
-                          <FormControl>
-                            <Checkbox
-                              checked={field.value}
-                              onCheckedChange={field.onChange}
-                            />
-                          </FormControl>
-                          <FormLabel>
-                            {t("submit.isOpenSource", language)}
-                          </FormLabel>
-                        </FormItem>
-                      )}
-                    />
-
-                    <FormField
-                      control={form.control}
-                      name="supports_cn"
-                      render={({ field }) => (
-                        <FormItem className="flex flex-row items-start space-x-3 space-y-0">
-                          <FormControl>
-                            <Checkbox
-                              checked={field.value}
-                              onCheckedChange={field.onChange}
-                            />
-                          </FormControl>
-                          <FormLabel>
-                            {t("submit.supportsChina", language)}
-                          </FormLabel>
-                        </FormItem>
-                      )}
-                    />
                   </div>
                 </div>
 
@@ -410,7 +457,7 @@ const Submit = () => {
 
                   <FormField
                     control={form.control}
-                    name="contact_email"
+                    name="contact"
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>{t("submit.contactEmail", language)}</FormLabel>
@@ -421,35 +468,28 @@ const Submit = () => {
                       </FormItem>
                     )}
                   />
-
-                  <FormField
-                    control={form.control}
-                    name="additional_notes"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>{t("submit.additionalNotes", language)}</FormLabel>
-                        <FormControl>
-                          <Textarea 
-                            placeholder="Any additional information about the tool"
-                            {...field} 
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
                 </div>
 
-                <Button type="submit" className="w-full" disabled={isSubmitting}>
-                  {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                  {t("submit.submitTool", language)}
+                <Button 
+                  type="submit" 
+                  className="w-full" 
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      {t("submit.submitting", language)}
+                    </>
+                  ) : (
+                    t("submit.submitButton", language)
+                  )}
                 </Button>
               </form>
             </Form>
           </CardContent>
         </Card>
       </div>
-
+      
       <Footer />
     </div>
   );
