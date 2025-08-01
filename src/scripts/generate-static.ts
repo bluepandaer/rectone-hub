@@ -14,14 +14,16 @@ const dataDir = path.join(__dirname, '..', 'data');
 const loadData = async () => {
   try {
     const tools = JSON.parse(fs.readFileSync(path.join(dataDir, 'tools.json'), 'utf8'));
+    const categories = JSON.parse(fs.readFileSync(path.join(dataDir, 'categories.json'), 'utf8'));
+    const tags = JSON.parse(fs.readFileSync(path.join(dataDir, 'tags.json'), 'utf8'));
     const alternatives = JSON.parse(fs.readFileSync(path.join(dataDir, 'alternatives.json'), 'utf8'));
     const vsPairs = JSON.parse(fs.readFileSync(path.join(dataDir, 'vspairs.json'), 'utf8'));
     const deals = JSON.parse(fs.readFileSync(path.join(dataDir, 'deals.json'), 'utf8'));
     
-    return { tools, alternatives, vsPairs, deals };
+    return { tools, categories, tags, alternatives, vsPairs, deals };
   } catch (error) {
     console.error('Error loading data files:', error);
-    return { tools: [], alternatives: [], vsPairs: [], deals: [] };
+    return { tools: [], categories: [], tags: [], alternatives: [], vsPairs: [], deals: [] };
   }
 };
 
@@ -49,10 +51,16 @@ const main = async () => {
   fs.writeFileSync(path.join(publicDir, 'feed.json'), staticFiles.json);
   
   console.log('✅ Generated static files:');
-  console.log('  - sitemap.xml');
-  console.log('  - robots.txt');
-  console.log('  - feed.xml');
-  console.log('  - feed.json');
+  console.log('  - public/sitemap.xml');
+  console.log('  - public/robots.txt');
+  console.log('  - public/feed.xml');
+  console.log('  - public/feed.json');
+  
+  console.log('\n🌐 Verification URLs:');
+  console.log('  - https://rect.one/sitemap.xml');
+  console.log('  - https://rect.one/robots.txt');
+  console.log('  - https://rect.one/feed.xml');
+  console.log('  - https://rect.one/feed.json');
 };
 
 main().catch(console.error);

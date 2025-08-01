@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>rect.one - AI &amp; Dev Tools Hub</title>
+    <description>Discover, compare and find the best AI tools and development resources. Latest tools, deals, and alternatives updated daily.</description>
+    <link>https://rect.one</link>
+    <language>en-us</language>
+    <managingEditor>contact@rect.one</managingEditor>
+    <webMaster>contact@rect.one</webMaster>
+    <lastBuildDate>Thu, 01 Aug 2024 00:00:00 GMT</lastBuildDate>
+    <atom:link href="https://rect.one/feed.xml" rel="self" type="application/rss+xml"/>
+    
+    <item>
+      <title>Copilot Chat - AI assistant in your editor</title>
+      <description>Conversational AI assistant integrated directly into your code editor for interactive coding help.</description>
+      <link>https://rect.one/tools/copilot-chat</link>
+      <guid>https://rect.one/tools/copilot-chat</guid>
+      <pubDate>Mon, 05 Feb 2024 00:00:00 GMT</pubDate>
+      <category>Coding</category>
+      <category>Productivity</category>
+    </item>
+    
+    <item>
+      <title>Stable Diffusion - Open-source AI image generation</title>
+      <description>Open-source AI model for generating images from text descriptions.</description>
+      <link>https://rect.one/tools/stable-diffusion</link>
+      <guid>https://rect.one/tools/stable-diffusion</guid>
+      <pubDate>Tue, 30 Jan 2024 00:00:00 GMT</pubDate>
+      <category>Design</category>
+      <category>Art</category>
+    </item>
+    
+    <item>
+      <title>GitHub Copilot - Your AI pair programmer</title>
+      <description>AI-powered code completion tool that helps you write code faster with intelligent suggestions.</description>
+      <link>https://rect.one/tools/github-copilot</link>
+      <guid>https://rect.one/tools/github-copilot</guid>
+      <pubDate>Thu, 25 Jan 2024 00:00:00 GMT</pubDate>
+      <category>Coding</category>
+      <category>Productivity</category>
+    </item>
+    
+    <item>
+      <title>Perplexity - AI搜索引擎，获取准确信息</title>
+      <description>结合AI和搜索引擎的智能问答平台，提供带有来源引用的准确答案。支持实时信息查询，是研究和学习的强大工具。</description>
+      <link>https://rect.one/tools/perplexity</link>
+      <guid>https://rect.one/tools/perplexity</guid>
+      <pubDate>Thu, 15 Feb 2024 00:00:00 GMT</pubDate>
+      <category>Productivity</category>
+      <category>Data</category>
+    </item>
+    
+    <item>
+      <title>Cursor - AI代码编辑器，编程更智能</title>
+      <description>基于VSCode的AI代码编辑器，集成先进的AI编程助手。支持智能代码补全、代码生成、调试辅助等功能，大幅提升开发效率。</description>
+      <link>https://rect.one/tools/cursor</link>
+      <guid>https://rect.one/tools/cursor</guid>
+      <pubDate>Thu, 01 Feb 2024 00:00:00 GMT</pubDate>
+      <category>Coding</category>
+      <category>Productivity</category>
+    </item>
+    
+    <item>
+      <title>Notion AI - 智能笔记与知识管理</title>
+      <description>Notion内置的AI助手，帮助用户更好地创建、编辑和组织内容。支持文档写作、数据分析、翻译等多种AI功能。</description>
+      <link>https://rect.one/tools/notion-ai</link>
+      <guid>https://rect.one/tools/notion-ai</guid>
+      <pubDate>Sat, 20 Jan 2024 00:00:00 GMT</pubDate>
+      <category>Writing</category>
+      <category>Productivity</category>
+    </item>
+  </channel>
+</rss>

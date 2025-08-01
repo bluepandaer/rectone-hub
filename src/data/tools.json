@@ -205,5 +205,107 @@
     "dealIds": [],
     "createdAt": "2024-02-15",
     "updatedAt": "2024-08-01"
+  },
+  {
+    "id": "github-copilot",
+    "slug": "github-copilot",
+    "name": "GitHub Copilot",
+    "slogan": "Your AI pair programmer",
+    "description": "# GitHub Copilot\n\nAI-powered code completion tool that helps you write code faster with intelligent suggestions.\n\n## Core Features\n- Real-time code suggestions\n- Context-aware completions\n- Multiple language support\n- IDE integrations",
+    "logo": "https://images.unsplash.com/photo-1556075798-4825dfaaf498?w=64&h=64&fit=crop&crop=center",
+    "website": "https://github.com/features/copilot",
+    "docs": "https://docs.github.com/copilot",
+    "pricing": [
+      {"plan": "Individual", "price": "$10/月", "notes": "Personal use"},
+      {"plan": "Business", "price": "$19/月/用户", "notes": "Team features"},
+      {"plan": "Enterprise", "price": "$39/月/用户", "notes": "Advanced security"}
+    ],
+    "isOpenSource": false,
+    "hasFreeTrial": true,
+    "supportsCN": true,
+    "platforms": ["VS Code", "Visual Studio", "JetBrains"],
+    "integrations": ["GitHub", "VS Code", "Vim"],
+    "categories": ["Coding", "Productivity"],
+    "tags": ["代码补全", "AI编程", "GitHub", "开发工具"],
+    "loginMethods": ["GitHub"],
+    "score": {"ease": 4.7, "value": 4.5, "features": 4.6, "docs": 4.4},
+    "pros": ["GitHub集成", "多IDE支持", "代码质量高"],
+    "cons": ["需要GitHub账号", "网络依赖", "订阅制"],
+    "faq": [
+      {"q": "支持哪些编程语言？", "a": "支持所有主流编程语言，包括Python、JavaScript、Go等。"},
+      {"q": "如何取消订阅？", "a": "可以在GitHub账户设置中随时取消订阅。"}
+    ],
+    "altOf": [],
+    "dealIds": [],
+    "createdAt": "2024-01-25",
+    "updatedAt": "2024-08-01"
+  },
+  {
+    "id": "stable-diffusion",
+    "slug": "stable-diffusion",
+    "name": "Stable Diffusion",
+    "slogan": "Open-source AI image generation",
+    "description": "# Stable Diffusion\n\nOpen-source AI model for generating images from text descriptions.\n\n## Core Features\n- Text-to-image generation\n- Image-to-image editing\n- Inpainting capabilities\n- Custom model training",
+    "logo": "https://images.unsplash.com/photo-1547036967-23d11aacaee0?w=64&h=64&fit=crop&crop=center",
+    "website": "https://stability.ai",
+    "docs": "https://stability.ai/docs",
+    "pricing": [
+      {"plan": "Free", "price": "$0", "notes": "Open source"},
+      {"plan": "DreamStudio", "price": "$10起", "notes": "Cloud platform"},
+      {"plan": "API", "price": "按用量", "notes": "Developer API"}
+    ],
+    "isOpenSource": true,
+    "hasFreeTrial": true,
+    "supportsCN": true,
+    "platforms": ["Web", "Local", "API"],
+    "integrations": ["Hugging Face", "ComfyUI", "AUTOMATIC1111"],
+    "categories": ["Design", "Art"],
+    "tags": ["开源", "图像生成", "AI绘画", "本地部署"],
+    "loginMethods": ["Email", "GitHub"],
+    "score": {"ease": 3.8, "value": 4.8, "features": 4.7, "docs": 4.1},
+    "pros": ["完全开源", "可本地部署", "社区活跃", "可定制性强"],
+    "cons": ["技术门槛高", "需要GPU", "安装复杂"],
+    "faq": [
+      {"q": "需要什么配置运行？", "a": "建议使用NVIDIA GPU，至少8GB显存。"},
+      {"q": "商用是否免费？", "a": "开源版本可免费商用，需遵循许可证要求。"}
+    ],
+    "altOf": ["Midjourney", "DALL-E"],
+    "dealIds": [],
+    "createdAt": "2024-01-30",
+    "updatedAt": "2024-08-01"
+  },
+  {
+    "id": "copilot-chat",
+    "slug": "copilot-chat",
+    "name": "Copilot Chat",
+    "slogan": "AI assistant in your editor",
+    "description": "# Copilot Chat\n\nConversational AI assistant integrated directly into your code editor for interactive coding help.\n\n## Core Features\n- In-editor chat interface\n- Code explanation\n- Bug fixing assistance\n- Refactoring suggestions",
+    "logo": "https://images.unsplash.com/photo-1531297484001-80022131f5a1?w=64&h=64&fit=crop&crop=center",
+    "website": "https://github.com/features/copilot",
+    "docs": "https://docs.github.com/copilot/chatting-with-github-copilot",
+    "pricing": [
+      {"plan": "Individual", "price": "$10/月", "notes": "Included with Copilot"},
+      {"plan": "Business", "price": "$19/月/用户", "notes": "Team features"},
+      {"plan": "Enterprise", "price": "$39/月/用户", "notes": "Advanced controls"}
+    ],
+    "isOpenSource": false,
+    "hasFreeTrial": true,
+    "supportsCN": true,
+    "platforms": ["VS Code", "Visual Studio"],
+    "integrations": ["GitHub", "VS Code Extensions"],
+    "categories": ["Coding", "Productivity"],
+    "tags": ["代码聊天", "AI助手", "编程帮助", "代码解释"],
+    "loginMethods": ["GitHub"],
+    "score": {"ease": 4.6, "value": 4.4, "features": 4.5, "docs": 4.3},
+    "pros": ["编辑器集成", "上下文感知", "实时帮助"],
+    "cons": ["仅限部分编辑器", "需要Copilot订阅", "网络依赖"],
+    "faq": [
+      {"q": "与普通Copilot有什么区别？", "a": "Copilot Chat提供对话式交互，可以解释代码和回答问题。"},
+      {"q": "支持中文对话吗？", "a": "是的，支持中文和其他多种语言的对话。"}
+    ],
+    "altOf": [],
+    "dealIds": [],
+    "createdAt": "2024-02-05",
+    "updatedAt": "2024-08-01"
   }
 ]

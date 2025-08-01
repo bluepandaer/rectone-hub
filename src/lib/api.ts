@@ -7,7 +7,14 @@ import type { Tool, Category, Tag, Deal, Alternative, VSPair, PendingSubmission,
 // Check data source preference
 const shouldUseFallback = (): boolean => {
   const useFallback = import.meta.env.VITE_USE_FALLBACK_DATA === 'true';
-  return useFallback || !isSupabaseAvailable();
+  const usesFallback = useFallback || !isSupabaseAvailable();
+  
+  // Log data source in development
+  if (import.meta.env.DEV) {
+    console.log(`Data source: ${usesFallback ? 'json' : 'supabase'}`);
+  }
+  
+  return usesFallback;
 };
 
 // Tools API
