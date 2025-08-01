@@ -1,82 +1,82 @@
 [
   {
-    "id": "writing",
+    "id": "1",
+    "slug": "writing",
     "name": "Writing",
     "name_zh": "写作",
+    "name_es": "Escritura",
+    "name_de": "Schreiben",
+    "name_ja": "ライティング",
     "description": "AI writing tools for content creation, editing, and enhancement",
-    "description_zh": "AI写作工具，用于内容创作、编辑和优化",
+    "description_zh": "用于内容创作、编辑和优化的AI写作工具",
     "icon": "PenTool",
     "color": "#3B82F6",
-    "toolCount": 4
+    "count": 3,
+    "created_at": "2024-01-01T00:00:00Z",
+    "updated_at": "2024-01-15T00:00:00Z"
   },
   {
-    "id": "coding",
-    "name": "Coding", 
+    "id": "2",
+    "slug": "coding",
+    "name": "Coding",
     "name_zh": "编程",
+    "name_es": "Programación",
+    "name_de": "Programmierung",
+    "name_ja": "コーディング",
     "description": "Development tools, code editors, and programming assistants",
     "description_zh": "开发工具、代码编辑器和编程助手",
     "icon": "Code",
     "color": "#10B981",
-    "toolCount": 2
+    "count": 2,
+    "created_at": "2024-01-02T00:00:00Z",
+    "updated_at": "2024-01-16T00:00:00Z"
   },
   {
-    "id": "design",
+    "id": "3",
+    "slug": "design",
     "name": "Design",
     "name_zh": "设计",
+    "name_es": "Diseño",
+    "name_de": "Design",
+    "name_ja": "デザイン",
     "description": "Creative design tools and AI-powered visual creation",
     "description_zh": "创意设计工具和AI驱动的视觉创作",
     "icon": "Palette",
     "color": "#F59E0B",
-    "toolCount": 1
+    "count": 1,
+    "created_at": "2024-01-03T00:00:00Z",
+    "updated_at": "2024-01-17T00:00:00Z"
   },
   {
-    "id": "productivity",
+    "id": "4",
+    "slug": "productivity",
     "name": "Productivity",
     "name_zh": "效率工具",
+    "name_es": "Productividad",
+    "name_de": "Produktivität",
+    "name_ja": "生産性",
     "description": "Tools to enhance workflow and boost productivity",
     "description_zh": "提升工作流程和生产力的工具",
     "icon": "Zap",
     "color": "#8B5CF6",
-    "toolCount": 4
+    "count": 4,
+    "created_at": "2024-01-04T00:00:00Z",
+    "updated_at": "2024-01-18T00:00:00Z"
   },
   {
-    "id": "marketing",
-    "name": "Marketing",
-    "name_zh": "营销",
-    "description": "Marketing automation and campaign management tools",
-    "description_zh": "营销自动化和活动管理工具",
-    "icon": "TrendingUp",
-    "color": "#EF4444",
-    "toolCount": 1
-  },
-  {
-    "id": "data",
+    "id": "5",
+    "slug": "data",
     "name": "Data",
     "name_zh": "数据",
+    "name_es": "Datos",
+    "name_de": "Daten",
+    "name_ja": "データ",
     "description": "Data analysis, visualization, and intelligence tools",
     "description_zh": "数据分析、可视化和智能工具",
     "icon": "BarChart",
     "color": "#06B6D4",
-    "toolCount": 1
-  },
-  {
-    "id": "video",
-    "name": "Video",
-    "name_zh": "视频",
-    "description": "Video editing, generation, and production tools",
-    "description_zh": "视频编辑、生成和制作工具",
-    "icon": "Video",
-    "color": "#EC4899",
-    "toolCount": 0
-  },
-  {
-    "id": "audio",
-    "name": "Audio",
-    "name_zh": "音频",
-    "description": "Audio editing, generation, and processing tools",
-    "description_zh": "音频编辑、生成和处理工具",
-    "icon": "Headphones",
-    "color": "#84CC16",
-    "toolCount": 0
+    "count": 1,
+    "created_at": "2024-01-05T00:00:00Z",
+    "updated_at": "2024-01-19T00:00:00Z"
   }
 ]

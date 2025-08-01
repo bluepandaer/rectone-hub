@@ -1,73 +1,342 @@
-# Welcome to your Lovable project
+# rect.one - AI & Development Tools Hub
 
-## Project info
+A comprehensive platform for discovering, comparing, and choosing the best AI and development tools. Built with React, TypeScript, Tailwind CSS, and Supabase.
 
-**URL**: https://lovable.dev/projects/bdfbc5e7-008c-4f78-b26c-9c0ef2b19802
+## Features
 
-## How can I edit this code?
+- 🔍 **Tool Discovery**: Browse a curated directory of AI and development tools
+- 🆚 **Tool Comparisons**: Side-by-side comparisons with detailed analysis
+- 🔄 **Alternative Suggestions**: Find alternatives to popular tools
+- 💰 **Deals & Offers**: Exclusive deals and discounts
+- 🌐 **Multi-language Support**: English, Chinese, Spanish, German, Japanese
+- 📱 **Responsive Design**: Works on all devices
+- 🔒 **RLS Security**: Secure database with Row Level Security
+- 🎨 **Modern UI**: Built with shadcn/ui components
 
-There are several ways of editing your application.
+## Quick Start
 
-**Use Lovable**
+### Prerequisites
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/bdfbc5e7-008c-4f78-b26c-9c0ef2b19802) and start prompting.
+- Node.js 18+ and npm
+- Supabase account (optional, has JSON fallback)
 
-Changes made via Lovable will be committed automatically to this repo.
+### Installation
 
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
+1. Clone the repository:
+```bash
 git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
 cd <YOUR_PROJECT_NAME>
+```
 
-# Step 3: Install the necessary dependencies.
-npm i
+2. Install dependencies:
+```bash
+npm install
+```
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+3. Start development server:
+```bash
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+## Data Sources
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+The application supports two data sources:
 
-**Use GitHub Codespaces**
+### 1. Supabase (Recommended)
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+To use Supabase as your data source:
 
-## What technologies are used for this project?
+1. Create a Supabase project
+2. Run the database migration:
+```sql
+-- Execute the contents of supabase/migrations/001_initial_schema.sql
+-- This creates all tables, policies, and sample data
+```
 
-This project is built with:
+3. Set environment variables:
+```bash
+VITE_SUPABASE_URL=your_supabase_url
+VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
+```
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+### 2. Local JSON (Fallback)
 
-## How can I deploy this project?
+The app automatically falls back to local JSON files when:
+- Supabase environment variables are missing
+- Supabase connection fails
+- `VITE_USE_FALLBACK_DATA=true` is set
 
-Simply open [Lovable](https://lovable.dev/projects/bdfbc5e7-008c-4f78-b26c-9c0ef2b19802) and click on Share -> Publish.
+JSON files are located in `src/data/`:
+- `tools.json` - Tool directory
+- `categories.json` - Tool categories
+- `tags.json` - Tool tags
+- `deals.json` - Current deals
+- `alternatives.json` - Tool alternatives
+- `vspairs.json` - Tool comparisons
 
-## Can I connect a custom domain to my Lovable project?
+## Database Schema
 
-Yes, you can!
+### Tables
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+- **tools**: Main tool directory with detailed information
+- **categories**: Tool categories with counts
+- **tags**: Tool tags with counts
+- **deals**: Active deals and offers
+- **alternatives**: Alternative tool suggestions
+- **vspairs**: Tool comparison pairs
+- **pending_submissions**: User-submitted tools awaiting review
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+### RLS Policies
+
+- ✅ Anonymous **READ** access to all data tables
+- ✅ Anonymous **INSERT** to pending_submissions only
+- ❌ Anonymous **UPDATE/DELETE** denied everywhere
+
+## Adding Content
+
+### Add a New Tool
+
+1. **Via Supabase Dashboard**:
+```sql
+INSERT INTO tools (slug, name, slogan, description_md, website_url, pricing, categories, tags, platforms, is_open_source, has_free_trial, supports_cn)
+VALUES (
+  'tool-slug',
+  'Tool Name',
+  'One-line description',
+  'Detailed markdown description',
+  'https://tool-website.com',
+  '[{"plan": "Free", "price": "Free"}, {"plan": "Pro", "price": "$20/month"}]'::jsonb,
+  ARRAY['category1', 'category2'],
+  ARRAY['tag1', 'tag2'],
+  ARRAY['Web', 'iOS'],
+  false,
+  true,
+  false
+);
+```
+
+2. **Via JSON File** (fallback mode):
+Add to `src/data/tools.json` following the existing structure.
+
+### Add Tool Alternatives
+
+```sql
+INSERT INTO alternatives (brand, description, items)
+VALUES (
+  'Brand Name',
+  'Description of why you might want alternatives',
+  '[{"tool_slug": "alternative-tool", "reason": "Why this is a good alternative"}]'::jsonb
+);
+```
+
+### Add Tool Comparison
+
+```sql
+INSERT INTO vspairs (a_slug, b_slug, matrix, summary, verdict_for)
+VALUES (
+  'tool-a-slug',
+  'tool-b-slug',
+  '{"price": {"Tool A": "$20/month", "Tool B": "$30/month"}, "features": ["Feature 1", "Feature 2"]}'::jsonb,
+  'Comparison summary',
+  '{"beginner": "Tool A is better for beginners", "team": "Tool B is better for teams", "enterprise": "Tool A is better for enterprise"}'::jsonb
+);
+```
+
+### Add a Deal
+
+```sql
+INSERT INTO deals (tool_slug, title, code, url, description, discount_percentage, starts_at, ends_at)
+VALUES (
+  'tool-slug',
+  'Special Offer Title',
+  'DISCOUNT20',
+  'https://tool-website.com/offer',
+  'Get 20% off your first year',
+  20,
+  NOW(),
+  NOW() + INTERVAL '30 days'
+);
+```
+
+## Scripts
+
+### Generate Static Files
+
+Generate sitemap.xml, robots.txt, and feeds:
+
+```bash
+npm run generate:static
+```
+
+This creates:
+- `public/sitemap.xml` - Search engine sitemap
+- `public/robots.txt` - Crawler instructions
+- `public/feed.xml` - RSS feed
+- `public/feed.json` - JSON feed
+
+### Sync Supabase to JSON
+
+Export Supabase data to local JSON files:
+
+```bash
+npm run sync:fallback
+```
+
+This is useful for:
+- Creating backups
+- Switching to JSON mode
+- Development without Supabase
+
+## Configuration
+
+### Analytics
+
+Configure analytics in the Settings page (`/settings`):
+
+1. **Google Analytics 4**: Set tracking ID (GA_MEASUREMENT_ID)
+2. **Plausible**: Set domain name
+3. **Umami**: Set tracking ID
+4. **None**: Disable all tracking
+
+### Language Support
+
+The app supports 5 languages with automatic fallbacks:
+
+- **English (en)**: Default language
+- **Chinese (zh)**: Simplified Chinese
+- **Spanish (es)**: Spanish
+- **German (de)**: German
+- **Japanese (ja)**: Japanese
+
+Content can be localized using fields like `name_zh`, `description_zh`, etc.
+
+### Environment Variables
+
+```bash
+# Supabase Configuration
+VITE_SUPABASE_URL=your_supabase_url
+VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
+
+# Force JSON fallback (optional)
+VITE_USE_FALLBACK_DATA=true
+
+# Analytics (configured via UI)
+VITE_GA_MEASUREMENT_ID=G-XXXXXXXXXX
+VITE_PLAUSIBLE_DOMAIN=yourdomain.com
+VITE_UMAMI_TRACKING_ID=your-tracking-id
+```
+
+## SEO Features
+
+- ✅ Dynamic meta titles and descriptions
+- ✅ Open Graph and Twitter Card tags
+- ✅ Canonical URLs
+- ✅ JSON-LD structured data
+- ✅ Sitemap generation
+- ✅ RSS and JSON feeds
+
+### Structured Data
+
+- **Tools**: SoftwareApplication schema with pricing, ratings, and features
+- **Alternatives**: FAQPage schema with common questions
+- **Comparisons**: FAQPage schema with comparison insights
+
+## Deployment
+
+### Build for Production
+
+```bash
+npm run build
+```
+
+### Deploy to Vercel/Netlify
+
+1. Connect your Git repository
+2. Set environment variables
+3. Deploy automatically on push
+
+### Generate Static Files
+
+After deployment, generate static files:
+
+```bash
+npm run generate:static
+```
+
+## Development
+
+### Project Structure
+
+```
+src/
+├── components/          # Reusable UI components
+│   ├── layout/         # Layout components (NavBar, Footer)
+│   ├── shared/         # Shared components (SEO, Loading, etc.)
+│   ├── tools/          # Tool-specific components
+│   └── ui/             # shadcn/ui components
+├── data/               # JSON fallback data
+├── hooks/              # Custom React hooks
+├── lib/                # Utilities and API functions
+├── pages/              # Page components
+└── scripts/            # Build and utility scripts
+```
+
+### Adding New Features
+
+1. **New Page**: Create in `src/pages/` and add route to `App.tsx`
+2. **New Component**: Add to appropriate `src/components/` folder
+3. **New API Function**: Add to `src/lib/api.ts` and `src/lib/supabase.ts`
+4. **New Translation**: Add to `src/lib/i18n.ts`
+
+### Code Style
+
+- Use TypeScript for all new code
+- Follow the existing component patterns
+- Use semantic color tokens from the design system
+- Prefer composition over inheritance
+- Keep components small and focused
+
+## Troubleshooting
+
+### Common Issues
+
+1. **Supabase Connection Errors**
+   - Check environment variables
+   - Verify RLS policies are correctly set
+   - App will fallback to JSON automatically
+
+2. **Missing Data**
+   - Run `npm run sync:fallback` to export from Supabase
+   - Check JSON files in `src/data/`
+
+3. **Build Errors**
+   - Ensure all TypeScript types are correct
+   - Check for missing imports
+
+4. **Performance Issues**
+   - Enable image lazy loading
+   - Use React.memo for expensive components
+   - Implement virtual scrolling for large lists
+
+### Support
+
+For issues and questions:
+- Check existing GitHub issues
+- Create a new issue with detailed information
+- Contact: hello@rect.one
+
+## License
+
+This project is licensed under the MIT License. See LICENSE file for details.
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Add tests if applicable
+5. Submit a pull request
+
+---
+
+Built with ❤️ by the rect.one team

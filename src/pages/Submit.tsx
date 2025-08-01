@@ -46,7 +46,7 @@ const platforms = [
 ];
 
 const Submit = () => {
-  const { language } = useLanguage();
+  const { language, setLanguage } = useLanguage();
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [newTag, setNewTag] = useState("");

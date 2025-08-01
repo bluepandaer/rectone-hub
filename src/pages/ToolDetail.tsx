@@ -18,7 +18,7 @@ import type { Tool } from "@/lib/types";
 
 const ToolDetail = () => {
   const { slug } = useParams<{ slug: string }>();
-  const { language } = useLanguage();
+  const { language, setLanguage } = useLanguage();
   const [tool, setTool] = useState<Tool | null>(null);
   const [relatedTools, setRelatedTools] = useState<Tool[]>([]);
   const [loading, setLoading] = useState(true);

@@ -18,7 +18,7 @@ import { getTools, getCategories, getTags } from "@/lib/api";
 import type { Tool, Category, Tag, ToolFilters, SearchResult } from "@/lib/types";
 
 const Tools = () => {
-  const { language } = useLanguage();
+  const { language, setLanguage } = useLanguage();
   const [searchParams, setSearchParams] = useSearchParams();
   const [result, setResult] = useState<SearchResult<Tool>>({ data: [], total: 0, page: 1, limit: 24, has_more: false });
   const [categories, setCategories] = useState<Category[]>([]);
@@ -100,6 +100,13 @@ const Tools = () => {
   const clearFilters = () => {
     setSearchParams(new URLSearchParams());
   };
+
+  const meta = buildMeta({
+    title: `${t('tools.title', language)} - rect.one`,
+    description: t('tools.subtitle', language),
+    path: '/tools',
+    language,
+  });
 
   if (loading) {
     return (

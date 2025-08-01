@@ -170,6 +170,49 @@ export const translations = {
     // Coming soon
     'comingSoon.title': 'Coming Soon',
     'comingSoon.description': 'This page is under development. Check back soon!',
+
+    // Settings
+    'settings.title': 'Settings',
+    'settings.description': 'Configure your experience and data sources',
+    'settings.save': 'Save Changes',
+    'settings.reset': 'Reset to Defaults',
+    'settings.saved': 'Settings Saved',
+    'settings.savedDescription': 'Your settings have been updated successfully.',
+    
+    // Data Source
+    'settings.dataSource.title': 'Data Source',
+    'settings.dataSource.description': 'Choose how the application loads data',
+    'settings.dataSource.label': 'Data Source',
+    'settings.dataSource.recommended': 'Recommended',
+    'settings.dataSource.fallback': 'Local JSON',
+    'settings.dataSource.static': 'Static',
+    'settings.dataSource.fallbackNote': 'Uses local JSON files. Some features like tool submission may not work.',
+    
+    // Analytics
+    'settings.analytics.title': 'Analytics & Tracking',
+    'settings.analytics.description': 'Configure analytics and tracking preferences',
+    'settings.analytics.provider': 'Analytics Provider',
+    'settings.analytics.none': 'None (No tracking)',
+    'settings.analytics.id': 'Tracking ID',
+    'settings.analytics.refTracking': 'Referral Tracking',
+    'settings.analytics.refTrackingDescription': 'Add ?ref=rect.one to outbound links',
+    'settings.analytics.cookieConsent': 'Show Cookie Notice',
+    'settings.analytics.cookieConsentDescription': 'Display cookie consent banner when analytics is enabled',
+    
+    // Language
+    'settings.language.title': 'Language & Localization',
+    'settings.language.description': 'Choose your preferred language',
+    'settings.language.label': 'Interface Language',
+    
+    // Privacy
+    'settings.privacy.title': 'Privacy Notice',
+    'settings.privacy.description': 'We use cookies and analytics to improve your experience. You can disable these features at any time.',
+
+    // Cookie notice
+    'cookie.title': 'We use cookies',
+    'cookie.description': 'We use cookies and analytics to improve your experience. You can manage these preferences in settings.',
+    'cookie.accept': 'Accept',
+    'cookie.decline': 'Decline',
   },
   zh: {
     // Navigation
@@ -330,6 +373,49 @@ export const translations = {
     // Coming soon
     'comingSoon.title': '即将推出',
     'comingSoon.description': '此页面正在开发中，敬请期待！',
+
+    // Settings
+    'settings.title': '设置',
+    'settings.description': '配置您的体验和数据源',
+    'settings.save': '保存更改',
+    'settings.reset': '重置为默认',
+    'settings.saved': '设置已保存',
+    'settings.savedDescription': '您的设置已成功更新。',
+    
+    // Data Source
+    'settings.dataSource.title': '数据源',
+    'settings.dataSource.description': '选择应用程序加载数据的方式',
+    'settings.dataSource.label': '数据源',
+    'settings.dataSource.recommended': '推荐',
+    'settings.dataSource.fallback': '本地JSON',
+    'settings.dataSource.static': '静态',
+    'settings.dataSource.fallbackNote': '使用本地JSON文件。某些功能如工具提交可能无法工作。',
+    
+    // Analytics
+    'settings.analytics.title': '分析和跟踪',
+    'settings.analytics.description': '配置分析和跟踪偏好',
+    'settings.analytics.provider': '分析提供商',
+    'settings.analytics.none': '无（不跟踪）',
+    'settings.analytics.id': '跟踪ID',
+    'settings.analytics.refTracking': '推荐跟踪',
+    'settings.analytics.refTrackingDescription': '在外部链接中添加?ref=rect.one',
+    'settings.analytics.cookieConsent': '显示Cookie通知',
+    'settings.analytics.cookieConsentDescription': '启用分析时显示Cookie同意横幅',
+    
+    // Language
+    'settings.language.title': '语言和本地化',
+    'settings.language.description': '选择您的首选语言',
+    'settings.language.label': '界面语言',
+    
+    // Privacy
+    'settings.privacy.title': '隐私通知',
+    'settings.privacy.description': '我们使用Cookie和分析来改善您的体验。您可以随时禁用这些功能。',
+
+    // Cookie notice
+    'cookie.title': '我们使用Cookie',
+    'cookie.description': '我们使用Cookie和分析来改善您的体验。您可以在设置中管理这些偏好。',
+    'cookie.accept': '接受',
+    'cookie.decline': '拒绝',
   },
   es: {
     // Navigation

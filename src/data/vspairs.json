@@ -1,0 +1,139 @@
+[
+  {
+    "id": "1",
+    "a_slug": "chatgpt",
+    "b_slug": "claude",
+    "matrix": {
+      "price": {
+        "ChatGPT": "Free tier + $20/month Pro",
+        "Claude": "Free tier + $20/month Pro"
+      },
+      "features": [
+        "Conversational AI",
+        "Code generation",
+        "Creative writing",
+        "Analysis and reasoning",
+        "Multi-language support"
+      ],
+      "platforms": {
+        "ChatGPT": ["Web", "iOS", "Android", "API"],
+        "Claude": ["Web", "API"]
+      },
+      "strengths": {
+        "ChatGPT": "Wider availability, more integrations, established ecosystem",
+        "Claude": "Superior reasoning, safety-focused, better at long-form content"
+      }
+    },
+    "summary": "Both ChatGPT and Claude are excellent AI assistants with similar pricing but different strengths. ChatGPT offers wider platform availability and more integrations, while Claude excels at reasoning and safety.",
+    "summary_zh": "ChatGPT和Claude都是优秀的AI助手，定价相似但各有优势。ChatGPT提供更广泛的平台支持和更多集成，而Claude在推理和安全性方面表现出色。",
+    "verdict_for": {
+      "beginner": "ChatGPT is better for beginners due to its wider availability, mobile apps, and larger community support.",
+      "team": "Claude is better for teams requiring high-quality analysis and reasoning, especially for complex business tasks.",
+      "enterprise": "ChatGPT has more enterprise integrations and APIs, making it better for large-scale implementations."
+    },
+    "created_at": "2024-01-01T00:00:00Z",
+    "updated_at": "2024-01-15T00:00:00Z"
+  },
+  {
+    "id": "2",
+    "a_slug": "cursor",
+    "b_slug": "chatgpt",
+    "matrix": {
+      "price": {
+        "Cursor": "Free tier + $20/month Pro",
+        "ChatGPT": "Free tier + $20/month Plus"
+      },
+      "features": [
+        "Code completion",
+        "AI chat assistance",
+        "Code refactoring",
+        "Documentation generation",
+        "Multi-language support"
+      ],
+      "platforms": {
+        "Cursor": ["Windows", "macOS", "Linux"],
+        "ChatGPT": ["Web", "iOS", "Android", "API"]
+      },
+      "strengths": {
+        "Cursor": "Specialized for coding, IDE integration, context-aware suggestions",
+        "ChatGPT": "General purpose, broader knowledge base, conversational interface"
+      }
+    },
+    "summary": "Cursor is specifically designed for coding with AI, offering deep IDE integration and context-aware assistance. ChatGPT is more general-purpose but can also help with coding tasks.",
+    "verdict_for": {
+      "beginner": "ChatGPT is better for beginners learning to code as it can explain concepts and provide general programming help.",
+      "team": "Cursor is better for development teams as it integrates directly into the coding workflow and provides specialized features.",
+      "enterprise": "Cursor is better for enterprise development teams, while ChatGPT is better for general business AI needs."
+    },
+    "created_at": "2024-01-02T00:00:00Z",
+    "updated_at": "2024-01-16T00:00:00Z"
+  },
+  {
+    "id": "3",
+    "a_slug": "perplexity",
+    "b_slug": "chatgpt",
+    "matrix": {
+      "price": {
+        "Perplexity": "Free tier + $20/month Pro",
+        "ChatGPT": "Free tier + $20/month Plus"
+      },
+      "features": [
+        "Information search",
+        "Source citations",
+        "Real-time data",
+        "Question answering",
+        "Research assistance"
+      ],
+      "platforms": {
+        "Perplexity": ["Web", "iOS", "Android"],
+        "ChatGPT": ["Web", "iOS", "Android", "API"]
+      },
+      "strengths": {
+        "Perplexity": "Real-time information, source citations, research-focused",
+        "ChatGPT": "Conversational interface, creative tasks, broader capabilities"
+      }
+    },
+    "summary": "Perplexity excels at research and information retrieval with real-time data and citations, while ChatGPT is better for conversational AI and creative tasks.",
+    "verdict_for": {
+      "beginner": "ChatGPT is better for beginners due to its conversational nature and ability to explain complex topics.",
+      "team": "Perplexity is better for research teams needing accurate, cited information for decision-making.",
+      "enterprise": "Depends on use case: Perplexity for research and analysis, ChatGPT for general AI assistance and automation."
+    },
+    "created_at": "2024-01-03T00:00:00Z",
+    "updated_at": "2024-01-17T00:00:00Z"
+  },
+  {
+    "id": "4",
+    "a_slug": "notion-ai",
+    "b_slug": "chatgpt",
+    "matrix": {
+      "price": {
+        "Notion AI": "Free tier + $8/month Plus",
+        "ChatGPT": "Free tier + $20/month Plus"
+      },
+      "features": [
+        "Writing assistance",
+        "Content generation",
+        "Summarization",
+        "Translation",
+        "Brainstorming"
+      ],
+      "platforms": {
+        "Notion AI": ["Web", "Windows", "macOS", "iOS", "Android"],
+        "ChatGPT": ["Web", "iOS", "Android", "API"]
+      },
+      "strengths": {
+        "Notion AI": "Integrated workspace, document-focused, collaborative features",
+        "ChatGPT": "Standalone AI chat, broader capabilities, more flexible"
+      }
+    },
+    "summary": "Notion AI is integrated into the Notion workspace for productivity and collaboration, while ChatGPT is a standalone AI assistant with broader capabilities.",
+    "verdict_for": {
+      "beginner": "Notion AI is better for beginners already using Notion for note-taking and organization.",
+      "team": "Notion AI is better for teams using Notion as their primary workspace and collaboration tool.",
+      "enterprise": "Depends on existing toolstack: Notion AI for Notion-based workflows, ChatGPT for broader AI integration."
+    },
+    "created_at": "2024-01-04T00:00:00Z",
+    "updated_at": "2024-01-18T00:00:00Z"
+  }
+]

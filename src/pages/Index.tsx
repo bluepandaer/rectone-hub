@@ -23,7 +23,7 @@ import {
 import type { Tool, Category, Deal } from "@/lib/types";
 
 const Index = () => {
-  const { language } = useLanguage();
+  const { language, setLanguage } = useLanguage();
   const [searchQuery, setSearchQuery] = useState("");
   const [featuredTools, setFeaturedTools] = useState<Tool[]>([]);
   const [trendingTools, setTrendingTools] = useState<Tool[]>([]);
@@ -33,6 +33,13 @@ const Index = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
+
+  const meta = buildMeta({
+    title: t('meta.title', language),
+    description: t('meta.description', language),
+    path: '/',
+    language,
+  });
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();

@@ -1,0 +1,98 @@
+[
+  {
+    "id": "1",
+    "brand": "ChatGPT",
+    "brand_zh": "ChatGPT",
+    "description": "Looking for ChatGPT alternatives? Explore these powerful AI assistants and chatbots that offer unique features, pricing, and capabilities.",
+    "description_zh": "寻找ChatGPT替代品？探索这些提供独特功能、定价和能力的强大AI助手和聊天机器人。",
+    "items": [
+      { "tool_slug": "claude", "reason": "Better safety features and reasoning capabilities" },
+      { "tool_slug": "perplexity", "reason": "Real-time web search with citations" },
+      { "tool_slug": "notion-ai", "reason": "Integrated with productivity workspace" }
+    ],
+    "created_at": "2024-01-01T00:00:00Z",
+    "updated_at": "2024-01-15T00:00:00Z"
+  },
+  {
+    "id": "2",
+    "brand": "VS Code",
+    "brand_zh": "VS Code",
+    "description": "Seeking VS Code alternatives? Discover modern code editors with AI integration, better performance, and innovative features.",
+    "description_zh": "寻找VS Code替代品？发现集成AI、性能更好、功能创新的现代代码编辑器。",
+    "items": [
+      { "tool_slug": "cursor", "reason": "Built-in AI pair programming features" }
+    ],
+    "created_at": "2024-01-02T00:00:00Z",
+    "updated_at": "2024-01-16T00:00:00Z"
+  },
+  {
+    "id": "3",
+    "brand": "Midjourney",
+    "brand_zh": "Midjourney",
+    "description": "Looking for Midjourney alternatives? Find AI image generators with different styles, pricing models, and accessibility options.",
+    "description_zh": "寻找Midjourney替代品？找到具有不同风格、定价模式和可访问性选项的AI图像生成器。",
+    "items": [],
+    "created_at": "2024-01-03T00:00:00Z",
+    "updated_at": "2024-01-17T00:00:00Z"
+  },
+  {
+    "id": "4",
+    "brand": "Notion",
+    "brand_zh": "Notion",
+    "description": "Seeking Notion alternatives? Explore productivity tools with different approaches to note-taking, project management, and collaboration.",
+    "description_zh": "寻找Notion替代品？探索在笔记、项目管理和协作方面采用不同方法的生产力工具。",
+    "items": [],
+    "created_at": "2024-01-04T00:00:00Z",
+    "updated_at": "2024-01-18T00:00:00Z"
+  },
+  {
+    "id": "5",
+    "brand": "Google Search",
+    "brand_zh": "谷歌搜索",
+    "description": "Looking for Google Search alternatives? Discover AI-powered search engines that provide direct answers and enhanced privacy.",
+    "description_zh": "寻找谷歌搜索替代品？发现提供直接答案和增强隐私的AI搜索引擎。",
+    "items": [
+      { "tool_slug": "perplexity", "reason": "AI-powered search with direct answers and citations" }
+    ],
+    "created_at": "2024-01-05T00:00:00Z",
+    "updated_at": "2024-01-19T00:00:00Z"
+  },
+  {
+    "id": "6",
+    "brand": "GitHub Copilot",
+    "brand_zh": "GitHub Copilot",
+    "description": "Seeking GitHub Copilot alternatives? Find AI coding assistants with different models, pricing, and integration options.",
+    "description_zh": "寻找GitHub Copilot替代品？找到具有不同模型、定价和集成选项的AI编程助手。",
+    "items": [
+      { "tool_slug": "cursor", "reason": "More comprehensive AI development environment" }
+    ],
+    "created_at": "2024-01-06T00:00:00Z",
+    "updated_at": "2024-01-20T00:00:00Z"
+  },
+  {
+    "id": "7",
+    "brand": "Claude",
+    "brand_zh": "Claude",
+    "description": "Looking for Claude alternatives? Explore AI assistants with different capabilities, availability, and integration options.",
+    "description_zh": "寻找Claude替代品？探索具有不同能力、可用性和集成选项的AI助手。",
+    "items": [
+      { "tool_slug": "chatgpt", "reason": "Wider platform availability and more integrations" },
+      { "tool_slug": "perplexity", "reason": "Better for research with real-time information" }
+    ],
+    "created_at": "2024-01-07T00:00:00Z",
+    "updated_at": "2024-01-21T00:00:00Z"
+  },
+  {
+    "id": "8",
+    "brand": "Perplexity",
+    "brand_zh": "Perplexity",
+    "description": "Seeking Perplexity alternatives? Find AI search tools and research assistants with different approaches to information retrieval.",
+    "description_zh": "寻找Perplexity替代品？找到采用不同信息检索方法的AI搜索工具和研究助手。",
+    "items": [
+      { "tool_slug": "chatgpt", "reason": "More conversational interface and broader capabilities" },
+      { "tool_slug": "claude", "reason": "Better for complex analysis and reasoning tasks" }
+    ],
+    "created_at": "2024-01-08T00:00:00Z",
+    "updated_at": "2024-01-22T00:00:00Z"
+  }
+]

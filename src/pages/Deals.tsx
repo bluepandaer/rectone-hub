@@ -13,7 +13,7 @@ import { getActiveDeals } from "@/lib/api";
 import type { Deal } from "@/lib/types";
 
 const Deals = () => {
-  const { language } = useLanguage();
+  const { language, setLanguage } = useLanguage();
   const [deals, setDeals] = useState<Deal[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
