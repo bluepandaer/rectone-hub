@@ -1,0 +1,82 @@
+[
+  {
+    "id": "writing",
+    "name": "Writing",
+    "name_zh": "写作",
+    "description": "AI writing tools for content creation, editing, and enhancement",
+    "description_zh": "AI写作工具，用于内容创作、编辑和优化",
+    "icon": "PenTool",
+    "color": "#3B82F6",
+    "toolCount": 4
+  },
+  {
+    "id": "coding",
+    "name": "Coding", 
+    "name_zh": "编程",
+    "description": "Development tools, code editors, and programming assistants",
+    "description_zh": "开发工具、代码编辑器和编程助手",
+    "icon": "Code",
+    "color": "#10B981",
+    "toolCount": 2
+  },
+  {
+    "id": "design",
+    "name": "Design",
+    "name_zh": "设计",
+    "description": "Creative design tools and AI-powered visual creation",
+    "description_zh": "创意设计工具和AI驱动的视觉创作",
+    "icon": "Palette",
+    "color": "#F59E0B",
+    "toolCount": 1
+  },
+  {
+    "id": "productivity",
+    "name": "Productivity",
+    "name_zh": "效率工具",
+    "description": "Tools to enhance workflow and boost productivity",
+    "description_zh": "提升工作流程和生产力的工具",
+    "icon": "Zap",
+    "color": "#8B5CF6",
+    "toolCount": 4
+  },
+  {
+    "id": "marketing",
+    "name": "Marketing",
+    "name_zh": "营销",
+    "description": "Marketing automation and campaign management tools",
+    "description_zh": "营销自动化和活动管理工具",
+    "icon": "TrendingUp",
+    "color": "#EF4444",
+    "toolCount": 1
+  },
+  {
+    "id": "data",
+    "name": "Data",
+    "name_zh": "数据",
+    "description": "Data analysis, visualization, and intelligence tools",
+    "description_zh": "数据分析、可视化和智能工具",
+    "icon": "BarChart",
+    "color": "#06B6D4",
+    "toolCount": 1
+  },
+  {
+    "id": "video",
+    "name": "Video",
+    "name_zh": "视频",
+    "description": "Video editing, generation, and production tools",
+    "description_zh": "视频编辑、生成和制作工具",
+    "icon": "Video",
+    "color": "#EC4899",
+    "toolCount": 0
+  },
+  {
+    "id": "audio",
+    "name": "Audio",
+    "name_zh": "音频",
+    "description": "Audio editing, generation, and processing tools",
+    "description_zh": "音频编辑、生成和处理工具",
+    "icon": "Headphones",
+    "color": "#84CC16",
+    "toolCount": 0
+  }
+]

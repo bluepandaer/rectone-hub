@@ -1,0 +1,35 @@
+[
+  {
+    "id": "chatgpt-summer-2024",
+    "toolSlug": "chatgpt",
+    "title": "ChatGPT Plus 夏季特惠",
+    "code": "SUMMER2024",
+    "url": "https://chat.openai.com/",
+    "desc": "新用户首月8折优惠，仅限本月",
+    "startsAt": "2024-08-01",
+    "endsAt": "2024-08-31",
+    "source": "官方"
+  },
+  {
+    "id": "cursor-student-discount",
+    "toolSlug": "cursor",
+    "title": "Cursor 学生折扣",
+    "code": "STUDENT50",
+    "url": "https://cursor.sh/",
+    "desc": "学生用户可享受50%折扣，需验证学生身份",
+    "startsAt": "2024-01-01",
+    "endsAt": "2024-12-31",
+    "source": "官方"
+  },
+  {
+    "id": "notion-team-bundle",
+    "toolSlug": "notion-ai",
+    "title": "Notion 团队套餐优惠",
+    "code": "TEAM20",
+    "url": "https://notion.so/",
+    "desc": "5人以上团队可享受20%折扣",
+    "startsAt": "2024-07-15",
+    "endsAt": "2024-09-15",
+    "source": "合作"
+  }
+]
