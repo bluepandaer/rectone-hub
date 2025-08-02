@@ -398,7 +398,7 @@ const Submit = () => {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>{t("submit.pricingType", language)}</FormLabel>
-                        <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <Select onValueChange={field.onChange} defaultValue={field.value || undefined}>
                           <FormControl>
                             <SelectTrigger>
                               <SelectValue placeholder="Select pricing model" />
