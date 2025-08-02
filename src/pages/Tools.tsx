@@ -193,12 +193,12 @@ const Tools = () => {
                 {/* Categories */}
                 <div>
                   <h3 className="font-medium mb-3">{t("tools.category", language)}</h3>
-                  <Select value={currentFilters.category || ''} onValueChange={(value) => updateFilter('category', value || undefined)}>
+                  <Select value={currentFilters.category || "all"} onValueChange={(value) => updateFilter('category', value === "all" ? undefined : value)}>
                     <SelectTrigger>
                       <SelectValue placeholder={t("tools.selectCategory", language)} />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">{t("tools.allCategories", language)}</SelectItem>
+                      <SelectItem value="all">{t("tools.allCategories", language)}</SelectItem>
                       {categories.map((category) => (
                         <SelectItem key={category.id} value={category.slug}>
                           {category.name} ({category.count})
@@ -211,12 +211,12 @@ const Tools = () => {
                 {/* Pricing */}
                 <div>
                   <h3 className="font-medium mb-3">{t("tools.pricing", language)}</h3>
-                  <Select value={currentFilters.pricing || ''} onValueChange={(value) => updateFilter('pricing', value || undefined)}>
+                  <Select value={currentFilters.pricing || "all"} onValueChange={(value) => updateFilter('pricing', value === "all" ? undefined : value)}>
                     <SelectTrigger>
                       <SelectValue placeholder={t("tools.selectPricing", language)} />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">{t("tools.allPricing", language)}</SelectItem>
+                      <SelectItem value="all">{t("tools.allPricing", language)}</SelectItem>
                       <SelectItem value="free">{t("tools.free", language)}</SelectItem>
                       <SelectItem value="freemium">{t("tools.freemium", language)}</SelectItem>
                       <SelectItem value="paid">{t("tools.paid", language)}</SelectItem>
