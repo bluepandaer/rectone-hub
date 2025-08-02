@@ -10,8 +10,25 @@ export const languages = {
   ja: { name: '日本語', flag: '🇯🇵' },
 } as const;
 
+// Normalize language input
+const normalize = (lang?: string | Language): Language => {
+  if (!lang || lang === 'system') {
+    if (typeof navigator !== 'undefined' && navigator.language?.toLowerCase().startsWith('zh')) return 'zh';
+    return 'en';
+  }
+  return lang.toLowerCase().startsWith('zh') ? 'zh' : 'en';
+};
+
 export const translations = {
   en: {
+    // Home page
+    'home.heroTitle': 'Discover the Best AI & Dev Tools',
+    'home.heroSubtitle': 'Find, compare, and choose the perfect tools for your projects',
+    'home.search.placeholder': 'Search for tools, categories, or tags...',
+    'home.featuredTools': 'Featured Tools',
+    'home.browseCategories': 'Browse Categories',
+    'home.categoriesDescription': 'Explore tools by category',
+
     // Navigation
     'nav.home': 'Home',
     'nav.tools': 'Tools',
@@ -158,6 +175,7 @@ export const translations = {
     'common.delete': 'Delete',
     'common.edit': 'Edit',
     'common.view': 'View',
+    'common.viewAll': 'View All',
     'common.next': 'Next',
     'common.previous': 'Previous',
     'common.page': 'Page',
@@ -215,6 +233,14 @@ export const translations = {
     'cookie.decline': 'Decline',
   },
   zh: {
+    // Home page
+    'home.heroTitle': '发现最佳 AI 和开发工具',
+    'home.heroSubtitle': '为您的项目寻找、比较和选择完美的工具',
+    'home.search.placeholder': '搜索工具、分类或标签...',
+    'home.featuredTools': '精选工具',
+    'home.browseCategories': '按分类浏览',
+    'home.categoriesDescription': '按分类探索工具',
+
     // Navigation
     'nav.home': '首页',
     'nav.tools': '工具库',
@@ -361,6 +387,7 @@ export const translations = {
     'common.delete': '删除',
     'common.edit': '编辑',
     'common.view': '查看',
+    'common.viewAll': '查看全部',
     'common.next': '下一页',
     'common.previous': '上一页',
     'common.page': '第',
@@ -437,6 +464,9 @@ export const translations = {
     // Coming soon
     'comingSoon.title': 'Próximamente',
     'comingSoon.description': '¡Esta página está en desarrollo. Vuelve pronto!',
+    
+    // Common
+    'common.viewAll': 'Ver Todo',
   },
   de: {
     // Navigation
@@ -458,6 +488,9 @@ export const translations = {
     // Coming soon
     'comingSoon.title': 'Demnächst',
     'comingSoon.description': 'Diese Seite ist in Entwicklung. Schau bald wieder vorbei!',
+    
+    // Common
+    'common.viewAll': 'Alle Anzeigen',
   },
   ja: {
     // Navigation
@@ -479,6 +512,9 @@ export const translations = {
     // Coming soon
     'comingSoon.title': '近日公開',
     'comingSoon.description': 'このページは開発中です。また戻ってきてください！',
+    
+    // Common
+    'common.viewAll': 'すべて見る',
   },
 } as const;
 
@@ -508,8 +544,9 @@ export const getLocalizedContent = (
 };
 
 export const t = (key: string, language: Language = 'en'): string => {
+  const normalizedLang = normalize(language);
   const keys = key.split('.');
-  let value: any = translations[language];
+  let value: any = translations[normalizedLang];
   
   for (const k of keys) {
     if (value && typeof value === 'object' && k in value) {
@@ -528,7 +565,14 @@ export const t = (key: string, language: Language = 'en'): string => {
     }
   }
   
-  return typeof value === 'string' ? value : key;
+  const result = typeof value === 'string' ? value : key;
+  
+  // Development mode key checking
+  if (import.meta.env.DEV && result === key) {
+    console.warn(`[i18n missing] ${normalizedLang}: ${key}`);
+  }
+  
+  return result;
 };
 
 export const formatNumber = (num: number, language: Language): string => {
@@ -553,3 +597,18 @@ const getLocale = (language: Language): string => {
   };
   return locales[language] || 'en-US';
 };
+
+// Development mode key validation
+if (import.meta.env.DEV) {
+  const requiredKeys = [
+    'home.heroTitle', 'home.heroSubtitle', 'home.search.placeholder',
+    'home.featuredTools', 'home.browseCategories', 'home.categoriesDescription',
+    'categories.title', 'common.viewAll',
+    'nav.tools', 'nav.alternatives', 'nav.deals', 'nav.submit'
+  ];
+  
+  for (const key of requiredKeys) {
+    if (t(key, 'en') === key) console.warn('[i18n missing]', 'en', key);
+    if (t(key, 'zh') === key) console.warn('[i18n missing]', 'zh', key);
+  }
+}
