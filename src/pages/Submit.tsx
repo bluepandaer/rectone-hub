@@ -326,7 +326,7 @@ const Submit = () => {
                         <FormLabel>{t("submit.platforms", language)}</FormLabel>
                         <div className="space-y-2">
                           <div className="flex gap-2">
-                            <Select value={newPlatform} onValueChange={setNewPlatform}>
+                            <Select value={newPlatform || undefined} onValueChange={setNewPlatform}>
                               <SelectTrigger>
                                 <SelectValue placeholder="Select platform" />
                               </SelectTrigger>
